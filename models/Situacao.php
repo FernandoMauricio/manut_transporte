@@ -40,7 +40,7 @@ class Situacao extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'nome' => 'Nome',
+            'nome' => 'Situação',
         ];
     }
 

@@ -21,7 +21,9 @@ use Yii;
  * @property integer $situacao_id
  * @property integer $motorista_id
  * @property integer $idusuario_solic
+ * @property string $usuario_solic_nome
  * @property integer $idusuario_suport
+ * @property string $usuario_suport_nome
  *
  * @property Forum[] $forums
  * @property TipoSolic $tipoSolic
@@ -30,8 +32,9 @@ use Yii;
  * @property Motorista $motorista
  * @property TipoCarga $tipocarga
  */
-class Transporte extends \yii\db\ActiveRecord
+class TransporteAdmin extends \yii\db\ActiveRecord
 {
+
     public $tipo_transporte;
 
     /**
@@ -48,11 +51,12 @@ class Transporte extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['data_solicitacao', 'bairro_id', 'tipocarga_id', 'local', 'descricao_transporte', 'data_prevista', 'hora_prevista', 'idusuario_solic', 'usuario_solic_nome', 'usuario_suport_nome'], 'required'],
-            [['data_solicitacao', 'data_prevista', 'hora_prevista', 'data_confirmacao', 'hora_confirmacao', 'tipo_transporte'], 'safe'],
+            //[['data_solicitacao', 'bairro_id', 'tipocarga_id', 'idusuario_solic', 'usuario_solic_nome', 'usuario_suport_nome', 'motorista_id'], 'required'],
+            [['data_solicitacao', 'data_prevista', 'hora_prevista', 'data_confirmacao', 'hora_confirmacao','tipo_transporte'], 'safe'],
             [['descricao_transporte'], 'string'],
-            [['bairro_id', 'tipo_solic_id', 'tipocarga_id', 'situacao_id', 'motorista_id', 'idusuario_solic', 'idusuario_suport'], 'integer'],
+            [['bairro_id', 'tipo_solic_id', 'tipocarga_id', 'situacao_id', 'idusuario_solic', 'idusuario_suport'], 'integer'],
             [['local'], 'string', 'max' => 100],
+            [['usuario_solic_nome', 'usuario_suport_nome'], 'string', 'max' => 45],
             [['tipo_solic_id'], 'exist', 'skipOnError' => true, 'targetClass' => TipoSolic::className(), 'targetAttribute' => ['tipo_solic_id' => 'id']],
             [['situacao_id'], 'exist', 'skipOnError' => true, 'targetClass' => Situacao::className(), 'targetAttribute' => ['situacao_id' => 'id']],
             [['bairro_id'], 'exist', 'skipOnError' => true, 'targetClass' => Bairro::className(), 'targetAttribute' => ['bairro_id' => 'idbairro']],
@@ -78,8 +82,8 @@ class Transporte extends \yii\db\ActiveRecord
             'hora_confirmacao' => 'Hora Confirmada',
             'tipo_solic_id' => 'Tipo de Solicitação',
             'tipocarga_id' => 'Tipo de Carga',
-            'situacao_id' => 'Situacao ID',
-            'motorista_id' => 'Motorista ID',
+            'situacao_id' => 'Situação',
+            'motorista_id' => 'Motorista',
             'idusuario_solic' => 'ID Usuário Solicitante',
             'usuario_solic_nome'=>'Usuário Solicitante',
             'idusuario_suport' => 'ID Usuário Suporte',
@@ -135,5 +139,4 @@ class Transporte extends \yii\db\ActiveRecord
     {
         return $this->hasOne(TipoCarga::className(), ['idtipo_carga' => 'tipocarga_id']);
     }
-
 }

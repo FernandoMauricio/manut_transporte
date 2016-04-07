@@ -42,14 +42,13 @@ AppAsset::register($this);
                  '<li class="dropdown-header">Novas Solicitações</li>',
                  ['label' => 'Solicitação de Transporte', 'url' => ['/transporte/index']],
                  ['label' => 'Solicitação de Manutenção', 'url' => ['/manutencao/index']],
-                 ['label' => 'Solicitação de Passagens', 'url' => ['/passagens/index']],
                            ],            
                     ],
 
                     ['label' => 'Administração',
                 'items' => [
                  '<li class="dropdown-header">Área Administrativa</li>',
-                 ['label' => 'Atendimento das Solicitações', 'url' => ['#']],
+                 ['label' => 'Atendimento das Solicitações', 'url' => ['transporte-admin/index']],
                  ['label' => 'Cadastro de Motorista', 'url' => ['motorista/index']],
                            ],            
                     ],
