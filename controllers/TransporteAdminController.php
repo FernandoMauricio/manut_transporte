@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Bairro;
+use app\models\Forum;
 use app\models\Motorista;
 use app\models\TipoCarga;
 use app\models\TransporteAdmin;
@@ -54,9 +55,31 @@ class TransporteAdminController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        $session = Yii::$app->session;
+
+         $model = $this->findModel($id);
+         $forum = new Forum();
+
+
+         $forum->solicitacao_id = $model->id;
+         $forum->usuario_id = $session['sess_codusuario'];
+         $forum->data = date('Y-m-d H:i');
+
+
+        //CONVERSA ENTRE USUARIO E SUPORTE
+        if ($forum->load(Yii::$app->request->post()) && $forum->save()) {
+
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('view', [
+                        'model' => $model,
+                        'forum' => $forum,
+                    ]);
+            return $this->render('create', [
+                'forum' => $forum,
+            ]);
+        }
+
     }
 
     /**
@@ -94,10 +117,8 @@ class TransporteAdminController extends Controller
         $motoristas = Motorista::find()->all();
         $tipoCarga = TipoCarga::find()->all();
 
-
-
         //Atualiza a Solicitação para Agendado e inclui o usuário que está realizando o agendamento
-        $model->idusuario_suport = $session['sess_codcolaborador'];
+        $model->idusuario_suport = $session['sess_codusuario'];
         $model->usuario_suport_nome = $session['sess_nomeusuario'];
 
 

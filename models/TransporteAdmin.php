@@ -75,7 +75,7 @@ class TransporteAdmin extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
+            'id' => 'Código',
             'data_solicitacao' => 'Data Solicitação',
             'descricao_transporte' => 'Descrição',
             'local' => 'Local',
