@@ -9,8 +9,6 @@ use app\models\Usuario;
 /* @var $model app\models\Forum */
 
 $this->title = $forum->id;
-$this->params['breadcrumbs'][] = ['label' => 'Forums', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <?php
@@ -36,7 +34,7 @@ $cod_usuario = $forum->usuario_id;
 
 <div class="panel panel-primary">
   <div class="panel-heading">
-    <h3 class="panel-title">Chat Suporte</h3>
+    <h3 class="panel-title">Histórico de Mensagens</h3>
   </div>
   <div class="panel-body">
   <div class="row">
@@ -51,7 +49,7 @@ foreach ($forum as $value) {
 
 <div class="well">
 
-<strong>Atualizado Por: </strong> <?php echo $usuario->usu_nomeusuario ?> - <strong>Feita em:</strong> <?php echo date('d/m/Y H:i:s', strtotime($data)); ?><br>
+<strong>Atualizado Por: </strong> <?php echo $usuario->usu_nomeusuario ?> - <strong>Feita em:</strong> <?php echo date('d/m/Y à\s H:i', strtotime($data)); ?><br>
 <strong>Mensagem: </strong><br><?php echo $forums ?>
 
 

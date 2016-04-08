@@ -14,14 +14,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($forum, 'mensagem')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($forum, 'data')->textInput() ?>
-
-    <?= $form->field($forum, 'usuario_id')->textInput() ?>
-
-    <?= $form->field($forum, 'solicitacao_id')->textInput() ?>
-
     <div class="form-group">
-        <?= Html::submitButton($forum->isNewRecord ? 'Create' : 'Update', ['class' => $forum->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($forum->isNewRecord ? 'Enviar Mensagem' : 'Enviar Mensagem', ['class' => $forum->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

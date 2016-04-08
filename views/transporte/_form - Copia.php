@@ -1,13 +1,11 @@
 <?php
 
 use yii\helpers\Html;
-//use yii\widgets\ActiveForm;
-use \kartik\form\ActiveForm;
+use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use kartik\select2\Select2;
 use kartik\datecontrol\DateControl;
 use kartik\widgets\TimePicker;
-use kartik\builder\Form;
 
 
 /* @var $this yii\web\View */
@@ -19,15 +17,10 @@ use kartik\builder\Form;
 
     <?php $form = ActiveForm::begin(); ?>
 
+    <?= $form->field($model, 'tipo_transporte')->textInput(['value'=>'Transporte','readonly'=>true]) ?>
 
-<div class="row">
-  <div class="col-md-2">
+    <?= $form->field($model, 'data_solicitacao')->textInput(['readonly'=>true]) ?>
 
-  <?= $form->field($model, 'tipo_transporte')->textInput(['value'=> $model->tipoSolic->descricao,'readonly'=>true]) ?>
-
-  </div>
-
-  <div class="col-md-3">
 
         <?php
                     $data_tipocarga = ArrayHelper::map($tipoCarga, 'idtipo_carga', 'descricao');
@@ -40,12 +33,6 @@ use kartik\builder\Form;
                             ]);
         ?>
 
-
-  </div>
-
-
-  <div class="col-md-4">
-
         <?php
                     $data_bairros = ArrayHelper::map($bairros, 'idbairro', 'descricao');
                     echo $form->field($model, 'bairro_id')->widget(Select2::classname(), [
@@ -57,16 +44,16 @@ use kartik\builder\Form;
                             ]);
         ?>
 
-  </div>
 
+    <?= $form->field($model, 'local')->textInput(['maxlength' => true]) ?>
 
-  <div class="col-md-3">
+    <?= $form->field($model, 'descricao_transporte')->textarea(['rows' => 6]) ?>
 
     <?php
-            echo $form->field($model, 'data_solicitacao')->widget(DateControl::classname(), [
+
+            echo $form->field($model, 'data_prevista')->widget(DateControl::classname(), [
             'type'=>DateControl::FORMAT_DATE,
             'ajaxConversion'=>true,
-            'disabled' => true,
             'options' => [
                 'pluginOptions' => [
                     'autoclose' => true
@@ -75,57 +62,38 @@ use kartik\builder\Form;
         ]);
 
     ?>
-  </div>
-
-</div>
-
-
-    <?= $form->field($model, 'local')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'descricao_transporte')->textarea(['rows' => 6]) ?>
-
-
-<div class="row">
-  <div class="col-md-3">
 
     <?php
-            echo $form->field($model, 'data_prevista')->widget(DateControl::classname(), [
-            'type'=>DateControl::FORMAT_DATE,
-            'ajaxConversion'=>true,
-            'options' => [
-                'pluginOptions' => [
-                    'autoclose' => true,
-                    
-                ]
-            ]
-        ]);
-    ?>    
 
-  </div>
-
-  <div class="col-md-3">
-      
-          <?php
-            echo $form->field($model, 'hora_prevista')->widget(TimePicker::classname(), [
-                'pluginOptions' => [
-                'autoclose' => true,
-                'showSeconds' => false,
+    echo $form->field($model, 'hora_prevista')->widget(TimePicker::classname(), [
+        'options' => ['placeholder' => 'Enter event time ...'],
+        'pluginOptions' => [
+        'autoclose' => true,
+        'showSeconds' => false,
                 'showMeridian' => false,
-            ]
-        ]);
+    ]
+]);
     ?>
 
-  </div>
-
-</div>
+    <?= $form->field($model, 'situacao_id')->textInput() ?>
 
 
+        <?php
+                    // $data_motoristas = ArrayHelper::map($motoristas, 'id', 'descricao');
+                    // echo $form->field($model, 'motorista_id')->widget(Select2::classname(), [
+                    //     'data' => $data_motoristas,
+                    //     'options' => ['placeholder' => 'Selecione um motorista...'],
+                    //     'pluginOptions' => [
+                    //         'allowClear' => true
+                    //     ],
+                    // ]);                    
+         ?> 
+
+    
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Criar Solicitação de Transporte' : 'Atualizar Informações', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Criar Solicitação de Transporte' : 'Criar Solicitação de Transporte', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
 
 </div>
-
-

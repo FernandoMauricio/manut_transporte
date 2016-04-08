@@ -7,8 +7,6 @@ use yii\helpers\Html;
 /* @var $model app\models\Forum */
 
 $this->title = 'Chat Suporte';
-$this->params['breadcrumbs'][] = ['label' => 'Forums', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="forum-create">
 

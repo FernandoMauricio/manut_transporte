@@ -35,14 +35,14 @@ use kartik\builder\Form;
   </div>
 
 
-  <div class="col-md-3">
+  <div class="col-md-2">
 
   <?= $form->field($model, 'bairro_label')->textInput(['value'=> $model->bairro->descricao,'readonly'=>true]) ?>
 
   </div>
 
 
-  <div class="col-md-2">
+  <div class="col-md-3">
 
   <?= $form->field($model, 'situacao_label')->textInput(['value'=> $model->situacao->nome,'readonly'=>true]) ?>
 
