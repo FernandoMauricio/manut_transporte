@@ -4,20 +4,17 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\TransporteAdminSearch */
+/* @var $searchModel app\models\TransporteSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Transporte Admins';
+$this->title = 'Solicitação de Transporte  ';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="transporte-admin-index">
+<div class="transporte-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1><?= Html::encode($this->title) . '<small>Área Administrativa</small>'  ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a('Create Transporte Admin', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -28,7 +25,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'data_solicitacao',
             'descricao_transporte:ntext',
             'local',
-            'bairro_id',
+            [
+                'attribute' => 'bairro_id',
+                'value' => 'bairro.descricao',
+            ],
             // 'data_prevista',
             // 'hora_prevista',
             // 'data_confirmacao',
@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'idusuario_suport',
             // 'usuario_suport_nome',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn' ,'template' => ' {view} {update}'],
         ],
     ]); ?>
 </div>

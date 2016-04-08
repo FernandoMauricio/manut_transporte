@@ -20,58 +20,126 @@ use kartik\builder\Form;
     <?php $form = ActiveForm::begin(); ?>
 
 
+<div class="row">
+  <div class="col-md-2">
 
-         <?php
-             echo Form::widget([
-                 'model'=>$model,
-                 'form'=>$form,
-                 'columns'=>10,
-                 'attributes'=>[
-                 'tipo_transporte'=>['staticValue' => 'Transporte','type'=>Form::INPUT_STATIC,'columnOptions'=>['colspan'=>2]], 
-                 'tipocarga_id'=>['staticValue' => $model->tipoCarga->descricao,'type'=>Form::INPUT_STATIC,'columnOptions'=>['colspan'=>2]],  
-                 'bairro_id'=>['staticValue' =>$model->bairro->descricao ,'type'=>Form::INPUT_STATIC,'columnOptions'=>['colspan'=>2]],  
-                 'situacao_id'=>['staticValue' =>$model->situacao->nome ,'type'=>Form::INPUT_STATIC,'options'=>['inline'=>true,'readonly'=>true],'columnOptions'=>['colspan'=>2]], 
-                 'data_solicitacao'=>['type'=>Form::INPUT_STATIC,'options'=>['inline'=>true,'readonly'=>true],'columnOptions'=>['colspan'=>2]],   
-                             ],
-             ]);
-         ?>
+  <?= $form->field($model, 'tipo_transporte_label')->textInput(['value'=> $model->tipoSolic->descricao,'readonly'=>true]) ?>
+
+  </div>
+
+  <div class="col-md-2">
+
+  <?= $form->field($model, 'tipo_carga_label')->textInput(['value'=> $model->tipoCarga->descricao,'readonly'=>true]) ?>
 
 
-<?= $form->field($model, 'local')->textInput(['maxlength' => true, 'readonly' => true]) ?>
+  </div>
 
 
+  <div class="col-md-3">
 
-    <?= $form->field($model, 'descricao_transporte')->textarea(['rows' => 6,'readonly'=>true]) ?>
+  <?= $form->field($model, 'bairro_label')->textInput(['value'=> $model->bairro->descricao,'readonly'=>true]) ?>
+
+  </div>
+
+
+  <div class="col-md-2">
+
+  <?= $form->field($model, 'situacao_label')->textInput(['value'=> $model->situacao->nome,'readonly'=>true]) ?>
+
+  </div>
+
+
+  <div class="col-md-3">
 
     <?php
-
-            echo $form->field($model, 'data_prevista')->widget(DateControl::classname(), [
+            echo $form->field($model, 'data_solicitacao')->widget(DateControl::classname(), [
             'type'=>DateControl::FORMAT_DATE,
             'ajaxConversion'=>true,
-            'readonly' => true,
+            'disabled' => true,
             'options' => [
                 'pluginOptions' => [
-                    'autoclose' => true,
+                    'autoclose' => true
                 ]
             ]
         ]);
 
     ?>
+  </div>
+
+</div>
+
+
+    <?= $form->field($model, 'local')->textInput(['maxlength' => true, 'readonly' => true]) ?>
+
+    <?= $form->field($model, 'descricao_transporte')->textarea(['rows' => 6,'readonly'=>true]) ?>
+
+
+<div class="row">
+  <div class="col-md-3">
 
     <?php
+            echo $form->field($model, 'data_prevista')->widget(DateControl::classname(), [
+            'type'=>DateControl::FORMAT_DATE,
+            'ajaxConversion'=>true,
+            'disabled' => true,
+            'options' => [
+                'pluginOptions' => [
+                    'autoclose' => true,
+                    
+                ]
+            ]
+        ]);
+    ?>    
 
-    echo $form->field($model, 'hora_prevista')->widget(TimePicker::classname(), [
-        'options' => ['placeholder' => 'Enter event time ...', 'readonly' => true],
-        'pluginOptions' => [
-        'autoclose' => true,
-        'readonly' => true,
-        'showSeconds' => false,
-        'showMeridian' => false,
-    ]
-]);
+  </div>
+
+  <div class="col-md-3">
+      
+          <?php
+            echo $form->field($model, 'hora_prevista')->widget(TimePicker::classname(), [
+                'options' => ['readonly' => true,'disabled' => true,],
+                'pluginOptions' => [
+                'autoclose' => true,
+                'showSeconds' => false,
+                'showMeridian' => false,
+            ]
+        ]);
     ?>
 
-    <?= $form->field($model, 'situacao_id')->textInput() ?>
+  </div>
+
+  <div class="col-md-3">
+
+    <?php
+            echo $form->field($model, 'data_confirmacao')->widget(DateControl::classname(), [
+            'type'=>DateControl::FORMAT_DATE,
+            'ajaxConversion'=>true,
+            'options' => [
+                'pluginOptions' => [
+                    'autoclose' => true,
+                    
+                ]
+            ]
+        ]);
+    ?>    
+
+  </div>
+
+  <div class="col-md-3">
+      
+          <?php
+            echo $form->field($model, 'hora_confirmacao')->widget(TimePicker::classname(), [
+                'pluginOptions' => [
+                'autoclose' => true,
+                'showSeconds' => false,
+                'showMeridian' => false,
+            ]
+        ]);
+    ?>
+
+  </div>
+
+</div>
 
 
         <?php
@@ -85,11 +153,12 @@ use kartik\builder\Form;
                     ]);                    
          ?> 
 
-    
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Criar' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Criar' : 'Atualizar Informações', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
 
 </div>
+
+

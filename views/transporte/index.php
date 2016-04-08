@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'idusuario_suport',
             // 'usuario_suport_nome',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn' ,'template' => ' {view} {update}'],
         ],
     ]); ?>
 </div>
