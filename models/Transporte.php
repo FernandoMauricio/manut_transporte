@@ -83,7 +83,7 @@ class Transporte extends \yii\db\ActiveRecord
             'idusuario_solic' => 'ID Usuário Solicitante',
             'usuario_solic_nome'=>'Usuário Solicitante',
             'idusuario_suport' => 'ID Usuário Suporte',
-            'usuario_suport_nome'=>'Usuário Suporte',
+            'usuario_suport_nome'=>'Responsável pelo Atendimento',
             'tipo_transporte' => 'Tipo de Solicitação',
         ];
     }

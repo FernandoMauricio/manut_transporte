@@ -5,10 +5,10 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\TransporteAdmin */
 
-$this->title = 'Update Transporte Admin: ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Transporte Admins', 'url' => ['index']];
+$this->title = 'Atualizar Solicitação de Transporte: ' . $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Solicitação de Transporte', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = 'Atualizar';
 ?>
 <div class="transporte-admin-update">
 

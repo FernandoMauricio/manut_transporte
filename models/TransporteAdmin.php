@@ -55,7 +55,7 @@ class TransporteAdmin extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            //[['data_solicitacao', 'bairro_id', 'tipocarga_id', 'idusuario_solic', 'usuario_solic_nome', 'usuario_suport_nome', 'motorista_id'], 'required'],
+            [['data_solicitacao', 'data_confirmacao', 'hora_confirmacao', 'bairro_id', 'tipocarga_id', 'idusuario_solic', 'usuario_solic_nome', 'usuario_suport_nome', 'motorista_id'], 'required'],
             [['data_solicitacao', 'data_prevista', 'hora_prevista', 'data_confirmacao', 'hora_confirmacao','tipo_transporte_label', 'tipo_carga_label', 'bairro_label', 'situacao_label'], 'safe'],
             [['descricao_transporte'], 'string'],
             [['bairro_id', 'tipo_solic_id', 'tipocarga_id', 'situacao_id', 'idusuario_solic', 'idusuario_suport'], 'integer'],
@@ -91,7 +91,7 @@ class TransporteAdmin extends \yii\db\ActiveRecord
             'idusuario_solic' => 'ID Usuário Solicitante',
             'usuario_solic_nome'=>'Usuário Solicitante',
             'idusuario_suport' => 'ID Usuário Suporte',
-            'usuario_suport_nome'=>'Usuário Suporte',
+            'usuario_suport_nome'=>'Responsável pelo Atendimento',
 
             'tipo_transporte_label' => 'Tipo de Solicitação',
             'bairro_label' => 'Bairro',

@@ -69,6 +69,9 @@ class TransporteAdminController extends Controller
         //CONVERSA ENTRE USUARIO E SUPORTE
         if ($forum->load(Yii::$app->request->post()) && $forum->save()) {
 
+            //MENSAGEM DE CONFIRMAÇÃO
+            Yii::$app->session->setFlash('success', '<strong>SUCESSO! </strong> A solicitação de Transporte de código <strong>' .$model->id. '</strong> foi ATUALIZADA!</strong>');
+
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('view', [
@@ -127,6 +130,9 @@ class TransporteAdminController extends Controller
             $model->situacao_id = 2; //Agendado
             $model->save();
 
+            //MENSAGEM DE CONFIRMAÇÃO
+            Yii::$app->session->setFlash('success', '<strong>SUCESSO! </strong> A solicitação de Transporte de código <strong>' .$model->id. '</strong> foi ATUALIZADA!</strong>');
+                
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [

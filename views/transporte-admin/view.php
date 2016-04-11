@@ -9,10 +9,21 @@ use yii\widgets\DetailView;
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Transportes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+
+//Pega as mensagens
+foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
+echo '<div class="alert alert-'.$key.'">'.$message.'</div>';
+}
+
 ?>
 <div class="transporte-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
+
+    <p>
+        <?= Html::a('Atualizar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+    </p>
 
 <div class="panel panel-primary">
   <div class="panel-heading">
@@ -28,17 +39,27 @@ $this->params['breadcrumbs'][] = $this->title;
             'descricao_transporte:ntext',
             'local',
             'bairro.descricao', //bairro_id
-            'data_prevista',
+            [
+                'attribute' => 'data_prevista',
+                'format'=>['datetime', 'php:d/m/Y'],
+            ],
             'hora_prevista',
-            'data_confirmacao',
+            [
+                'attribute' => 'data_confirmacao',
+                'format'=>['datetime', 'php:d/m/Y'],
+            ],
             'hora_confirmacao',
             'tipoSolic.descricao', //tipo_solic_id
             'tipoCarga.descricao', //tipocarga_id
-            'situacao.nome', //situacao_id
+            [ 
+            'attribute' => 'situacao.nome', //situacao_id
+              'format'=>'raw',
+              'value' => '<span class="label label-info">' .$model->situacao->nome .'</span>' 
+            ],
             'motorista.descricao', //motorista_id
-            'idusuario_solic',
+            //'idusuario_solic',
             'usuario_solic_nome',
-            'idusuario_suport',
+            //'idusuario_suport',
             'usuario_suport_nome',
         ],
     ]) ?>

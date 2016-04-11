@@ -14,15 +14,11 @@ $this->title = $forum->id;
 <?php
 
 $id = $_GET['id'];
-$cod_usuario = $forum->usuario_id;
 
         //busca pelas mensagens enviadas no Atendimento
         $sql_forum = 'SELECT * FROM forum WHERE solicitacao_id ='.$id.' ';
         $forum = Forum::findBySql($sql_forum)->all();  
 
-        //busca pelas mensagens enviadas no Atendimento
-         $sql_usuario = 'SELECT usu_nomeusuario FROM `usuario_usu` WHERE usu_codusuario ='.$cod_usuario.' ';
-         $usuario = Usuario::findBySql($sql_usuario)->one();  
 ?>
 
 
@@ -45,8 +41,13 @@ foreach ($forum as $value) {
 
     $forums = $value["mensagem"];
     $data = $value["data"];
-?>
+    $usuario_id = $value["usuario_id"];
 
+        //busca pelas mensagens enviadas no Atendimento
+         $sql_usuario = 'SELECT * FROM `usuario_usu` WHERE usu_codusuario ='.$usuario_id.' ';
+         $usuario = Usuario::findBySql($sql_usuario)->one();  
+
+?>
 <div class="well">
 
 <strong>Atualizado Por: </strong> <?php echo $usuario->usu_nomeusuario ?> - <strong>Feita em:</strong> <?php echo date('d/m/Y à\s H:i', strtotime($data)); ?><br>
