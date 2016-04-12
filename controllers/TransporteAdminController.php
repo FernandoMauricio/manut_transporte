@@ -33,6 +33,7 @@ class TransporteAdminController extends Controller
         ];
     }
 
+
     /**
      * Lists all TransporteAdmin models.
      * @return mixed
