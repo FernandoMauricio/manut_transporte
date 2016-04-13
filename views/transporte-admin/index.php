@@ -4,6 +4,11 @@ use yii\helpers\Html;
 use kartik\grid\GridView;
 use yii\widgets\Pjax;
 use kartik\export\ExportMenu;
+use kartik\widgets\Select2;
+use app\models\TipoCarga;
+use app\models\Motorista;
+use yii\helpers\ArrayHelper;
+use kartik\widgets\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\TransporteSearch */
@@ -20,31 +25,76 @@ $this->params['breadcrumbs'][] = $this->title;
 $gridColumns = [
             'id',
             'usuario_solic_nome',
+
             [
-              'attribute' => 'data_solicitacao',
-              'format' => ['date', 'php:d/m/Y'],
+                'attribute' => 'data_solicitacao',
+                'format' => ['date', 'php:d/m/Y'],
+                'width' => '190px',
+                'hAlign' => 'center',
+                'filter'=> DatePicker::widget([
+                'model' => $searchModel, 
+                'attribute' => 'data_solicitacao',
+                'pluginOptions' => [
+                     'autoclose'=>true,
+                     'format' => 'yyyy-mm-dd',
+                ]
+            ])
             ],
+
             [
-                'attribute' => 'tipocarga_id',
-                'value' => 'tipoCarga.descricao',
-                 'contentOptions' =>['style' => 'width:30px'],
+                'attribute'=>'tipo_carga_label', 
+                'vAlign'=>'middle',
+                'width'=>'160px',
+                'value'=>function ($model, $key, $index, $widget) { 
+                    return Html::a($model->tipoCarga->descricao);
+                },
+                'filterType'=>GridView::FILTER_SELECT2,
+                'filter'=>ArrayHelper::map(TipoCarga::find()->orderBy('idtipo_carga')->asArray()->all(), 'descricao', 'descricao'), 
+                'filterWidgetOptions'=>[
+                    'pluginOptions'=>['allowClear'=>true],
+                ],
+                'filterInputOptions'=>['placeholder'=>'Tipo'],
+                'format'=>'raw'
             ],
+
+
             'local',
+
             [
                 'attribute' => 'bairro_id',
                 'value' => 'bairro.descricao',
                  'contentOptions' =>['style' => 'width:30px'],
             ],
+
             [
-                'attribute' => 'motorista_id',
-                'value' => 'motorista.descricao',
-                 'contentOptions' =>['style' => 'width:30px'],
+                'attribute'=>'motorista_label', 
+                'width'=>'460px',
+                'value'=> 'motorista.descricao',
+                'filterType'=>GridView::FILTER_SELECT2,
+                'filter'=>ArrayHelper::map(Motorista::find()->asArray()->all(), 'descricao', 'descricao'), 
+                'filterWidgetOptions'=>[
+                    'pluginOptions'=>['allowClear'=>true],
+                ],
+                'filterInputOptions'=>['placeholder'=>'Motorista'],
+                'format'=>'raw'
             ],
+
+
             [
-              'attribute' => 'data_confirmacao',
-              'format' => ['date', 'php:d/m/Y'],
-               'contentOptions' =>['style' => 'width:30px'],
+                'attribute' => 'data_confirmacao',
+                'format' => ['date', 'php:d/m/Y'],
+                'width' => '190px',
+                'hAlign' => 'center',
+                'filter'=> DatePicker::widget([
+                'model' => $searchModel, 
+                'attribute' => 'data_confirmacao',
+                'pluginOptions' => [
+                     'autoclose'=>true,
+                     'format' => 'yyyy-mm-dd',
+                ]
+            ])
             ],
+
              'hora_confirmacao',
 
             ['class' => 'yii\grid\ActionColumn' ,'template' => ' {view} {update}'],
@@ -91,7 +141,7 @@ $gridColumns = [
     'containerOptions'=>['style'=>'overflow: auto'], // only set when $responsive = false
     'headerRowOptions'=>['class'=>'kartik-sheet-style'],
     'filterRowOptions'=>['class'=>'kartik-sheet-style'],
-    'pjax'=>false, // pjax is set to always true for this demo
+    'pjax'=>true, // pjax is set to always true for this demo
     'export'=>[
             'showConfirmAlert'=>false,
             'target'=>GridView::TARGET_BLANK,
