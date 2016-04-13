@@ -89,7 +89,7 @@ class TransporteAdmin extends \yii\db\ActiveRecord
             'situacao_id' => 'Situação',
             'motorista_id' => 'Motorista Responsável',
             'idusuario_solic' => 'ID Usuário Solicitante',
-            'usuario_solic_nome'=>'Usuário Solicitante',
+            'usuario_solic_nome'=>'Solicitante',
             'idusuario_suport' => 'ID Usuário Suporte',
             'usuario_suport_nome'=>'Responsável pelo Atendimento',
 

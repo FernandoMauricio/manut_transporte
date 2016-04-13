@@ -163,7 +163,7 @@ $gridColumns = [
         [
             'columns'=>[
                 ['content'=>'Detalhes das Solicitações de Transporte', 'options'=>['colspan'=>9, 'class'=>'text-center warning']], 
-                 ['content'=>'Ações', 'options'=>['colspan'=>3, 'class'=>'text-center warning']], 
+                ['content'=>'Ações', 'options'=>['colspan'=>3, 'class'=>'text-center warning']], 
             ],
         ]
     ],

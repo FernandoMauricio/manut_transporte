@@ -29,6 +29,8 @@ class Motorista extends \yii\db\ActiveRecord
     {
         return [
             [['descricao'], 'string', 'max' => 45],
+            [['status'], 'integer'],
+
         ];
     }
 
@@ -40,6 +42,7 @@ class Motorista extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'descricao' => 'Motorista',
+            'status' => 'Status',
         ];
     }
 

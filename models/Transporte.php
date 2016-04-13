@@ -33,6 +33,7 @@ use Yii;
 class Transporte extends \yii\db\ActiveRecord
 {
     public $tipo_transporte;
+    public $tipo_carga_label;
 
     /**
      * @inheritdoc
@@ -49,7 +50,7 @@ class Transporte extends \yii\db\ActiveRecord
     {
         return [
             [['data_solicitacao', 'bairro_id', 'tipocarga_id', 'local', 'descricao_transporte', 'data_prevista', 'hora_prevista', 'idusuario_solic', 'usuario_solic_nome'], 'required'],
-            [['data_solicitacao', 'data_prevista', 'hora_prevista', 'data_confirmacao', 'hora_confirmacao', 'tipo_transporte'], 'safe'],
+            [['data_solicitacao', 'data_prevista', 'hora_prevista', 'data_confirmacao', 'hora_confirmacao', 'tipo_transporte', 'tipo_carga_label'], 'safe'],
             [['descricao_transporte'], 'string'],
             [['bairro_id', 'tipo_solic_id', 'tipocarga_id', 'situacao_id', 'motorista_id', 'idusuario_solic', 'idusuario_suport'], 'integer'],
             [['local'], 'string', 'max' => 100],
@@ -81,10 +82,13 @@ class Transporte extends \yii\db\ActiveRecord
             'situacao_id' => 'Situacao ID',
             'motorista_id' => 'Motorista ID',
             'idusuario_solic' => 'ID Usuário Solicitante',
-            'usuario_solic_nome'=>'Usuário Solicitante',
+            'usuario_solic_nome'=>'Solicitante',
             'idusuario_suport' => 'ID Usuário Suporte',
             'usuario_suport_nome'=>'Responsável pelo Atendimento',
+           
             'tipo_transporte' => 'Tipo de Solicitação',
+            'tipo_carga_label' => 'Tipo de Carga',
+
         ];
     }
 

@@ -18,8 +18,8 @@ class TransporteSearch extends Transporte
     public function rules()
     {
         return [
-            [['id', 'bairro_id', 'tipo_solic_id', 'tipocarga_id', 'situacao_id', 'motorista_id', 'idusuario_solic', 'idusuario_suport'], 'integer'],
-            [['data_solicitacao', 'descricao_transporte', 'local', 'data_prevista', 'hora_prevista', 'data_confirmacao', 'hora_confirmacao', 'usuario_solic_nome','usuario_suport_nome'], 'safe'],
+            [['id', 'tipo_solic_id', 'tipocarga_id', 'situacao_id', 'motorista_id', 'idusuario_solic', 'idusuario_suport'], 'integer'],
+            [['data_solicitacao', 'bairro_id', 'descricao_transporte', 'local', 'data_prevista', 'hora_prevista', 'data_confirmacao', 'hora_confirmacao', 'usuario_solic_nome','usuario_suport_nome', 'tipo_carga_label'], 'safe'],
         ];
     }
 
@@ -41,7 +41,8 @@ class TransporteSearch extends Transporte
      */
     public function search($params)
     {
-        $query = Transporte::find();
+        $query = Transporte::find()
+        ->orderBy(['id' => SORT_DESC]);
 
         // add conditions that should always apply here
 
@@ -49,6 +50,12 @@ class TransporteSearch extends Transporte
             'query' => $query,
         ]);
 
+
+        $dataProvider->sort->attributes['tipo_carga_label'] = [
+        'asc' => ['tipo_carga.descricao' => SORT_ASC],
+        'desc' => ['tipo_carga.descricao' => SORT_DESC],
+        ];
+        
         $this->load($params);
 
         if (!$this->validate()) {
@@ -57,11 +64,14 @@ class TransporteSearch extends Transporte
             return $dataProvider;
         }
 
+        $query->joinWith('tipoCarga');
+        $query->joinWith('bairro');
+
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
             'data_solicitacao' => $this->data_solicitacao,
-            'bairro_id' => $this->bairro_id,
+            //'bairro_id' => $this->bairro_id,
             'data_prevista' => $this->data_prevista,
             'hora_prevista' => $this->hora_prevista,
             'data_confirmacao' => $this->data_confirmacao,
@@ -75,7 +85,10 @@ class TransporteSearch extends Transporte
         ]);
 
         $query->andFilterWhere(['like', 'descricao_transporte', $this->descricao_transporte])
-            ->andFilterWhere(['like', 'local', $this->local]);
+            ->andFilterWhere(['like', 'local', $this->local])
+            ->andFilterWhere(['like', 'usuario_solic_nome', $this->usuario_solic_nome])
+            ->andFilterWhere(['like', 'bairro.descricao', $this->bairro_id])
+            ->andFilterWhere(['=', 'tipo_carga.descricao', $this->tipo_carga_label]);
 
         return $dataProvider;
     }

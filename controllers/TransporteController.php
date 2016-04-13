@@ -98,7 +98,6 @@ class TransporteController extends Controller
 
         //Localização dos bairros, motoristas e tipo de carga
         $bairros = Bairro::find()->all();
-        $motoristas = Motorista::find()->all();
         $tipoCarga = TipoCarga::find()->all();
 
 
@@ -121,7 +120,6 @@ class TransporteController extends Controller
             return $this->render('create', [
                 'model' => $model,
                 'bairros'=> $bairros,
-                'motoristas'=>$motoristas,
                 'tipoCarga'=>$tipoCarga,
             ]);
         }

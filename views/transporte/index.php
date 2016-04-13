@@ -4,6 +4,9 @@ use yii\helpers\Html;
 //use yii\grid\GridView;
 use kartik\grid\GridView;
 use yii\widgets\Pjax;
+use yii\helpers\ArrayHelper;
+use kartik\widgets\DatePicker;
+use app\models\TipoCarga;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\TransporteSearch */
@@ -32,16 +35,52 @@ echo '<div class="alert alert-'.$key.'">'.$message.'</div>';
         $gridColumns = [
 
                     'id',
-                    'usuario_solic_nome',
+
                     [
-                      'attribute' => 'data_solicitacao',
-                      'format' => ['date', 'php:d/m/Y'],
+                    'attribute'=>'usuario_solic_nome',
+                    'width' => '2500px',
                     ],
+                    [
+                        'attribute' => 'data_solicitacao',
+                        'format' => ['date', 'php:d/m/Y'],
+                        //'width' => '100px',
+                        'hAlign' => 'center',
+                        'filter'=> DatePicker::widget([
+                        'model' => $searchModel, 
+                        'attribute' => 'data_solicitacao',
+                        'pluginOptions' => [
+                             'autoclose'=>true,
+                             'format' => 'yyyy-mm-dd',
+                        ]
+                    ])
+                    ],
+
+                    [
+                        'attribute'=>'tipo_carga_label', 
+                        'vAlign'=>'middle',
+                        'width'=>'160px',
+                        'value'=>function ($model, $key, $index, $widget) { 
+                            return Html::a($model->tipoCarga->descricao);
+                        },
+                        'filterType'=>GridView::FILTER_SELECT2,
+                        'filter'=>ArrayHelper::map(TipoCarga::find()->orderBy('idtipo_carga')->asArray()->all(), 'descricao', 'descricao'), 
+                        'filterWidgetOptions'=>[
+                            'pluginOptions'=>['allowClear'=>true],
+                        ],
+                        'filterInputOptions'=>['placeholder'=>'Tipo'],
+                        'format'=>'raw'
+                    ],
+
                     'descricao_transporte:ntext',
-                    'local',
+                    [
+                        'attribute' => 'local',
+                        'width' => '2500px',
+                       
+                    ],
                     [
                         'attribute' => 'bairro_id',
                         'value' => 'bairro.descricao',
+                       
                     ],
                      // 'data_prevista',
                      // 'hora_prevista',
@@ -61,37 +100,27 @@ echo '<div class="alert alert-'.$key.'">'.$message.'</div>';
 
          ?>
 
-<?php Pjax::begin(); ?>
+<?php Pjax::begin(['id'=>'w0-pjax']); ?>
 
     <?php 
     echo GridView::widget([
     'dataProvider'=>$dataProvider,
     'filterModel'=>$searchModel,
     'columns'=>$gridColumns,
-    'containerOptions'=>['style'=>'overflow: auto'], // only set when $responsive = false
+    //'containerOptions'=>['style'=>'overflow: auto'], // only set when $responsive = false
     'headerRowOptions'=>['class'=>'kartik-sheet-style'],
     'filterRowOptions'=>['class'=>'kartik-sheet-style'],
-    'pjax'=>false, // pjax is set to always true for this demo
-    // 'export'=>[
-    //         'showConfirmAlert'=>false,
-    //         'target'=>GridView::TARGET_BLANK,
-    //         'autoXlFormat'=>true,
-    //     ],
+    'pjax'=>true, // pjax is set to always true for this demo
 
-//  'exportConfig' => [
-//         kartik\export\ExportMenu::EXCEL => true,
-//         kartik\export\ExportMenu::PDF => true,
-//     ],  
-
-// 'toolbar' => [
-//         '{toggleData}',
-//         '{export}',
-//     ],
+    'toolbar' => [
+            '{toggleData}',
+        ],
 
     'beforeHeader'=>[
         [
             'columns'=>[
-                ['content'=>'Detalhes das Solicitações de Transporte', 'options'=>['colspan'=>12, 'class'=>'text-center warning']], 
+                ['content'=>'Detalhes das Solicitações de Transporte', 'options'=>['colspan'=>7, 'class'=>'text-center warning']], 
+                ['content'=>'Ações', 'options'=>['colspan'=>3, 'class'=>'text-center warning']],  
             ],
         ]
     ],

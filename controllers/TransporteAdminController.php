@@ -119,7 +119,7 @@ class TransporteAdminController extends Controller
 
         //Localização dos bairros, motoristas e tipo de carga
         $bairros = Bairro::find()->all();
-        $motoristas = Motorista::find()->all();
+        $motoristas = Motorista::find()->where(['status' => 1])->all();
         $tipoCarga = TipoCarga::find()->all();
 
         //Atualiza a Solicitação para Agendado e inclui o usuário que está realizando o agendamento
