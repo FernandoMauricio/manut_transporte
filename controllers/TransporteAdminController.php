@@ -7,6 +7,7 @@ use app\models\Bairro;
 use app\models\Forum;
 use app\models\Motorista;
 use app\models\TipoCarga;
+use app\models\Emailusuario;
 use app\models\TransporteAdmin;
 use app\models\TransporteAdminSearch;
 use yii\web\Controller;
@@ -71,6 +72,38 @@ class TransporteAdminController extends Controller
         //CONVERSA ENTRE USUARIO E SUPORTE
         if ($forum->load(Yii::$app->request->post()) && $forum->save()) {
 
+
+ 
+         //ENVIANDO EMAIL PARA O USUÁRIO INFORMANDO SOBRE UMA NOVA MENSAGEM....
+          $sql_email = "SELECT emus_email FROM `db_base`.emailusuario_emus WHERE emus_codusuario = '".$model->idusuario_solic."'";
+      
+      $email_solicitacao = Emailusuario::findBySql($sql_email)->all(); 
+      foreach ($email_solicitacao as $email)
+          {
+            $email_usuario  = $email["emus_email"];
+
+                            Yii::$app->mailer->compose()
+                            ->setFrom(['gmt@am.senac.br' => 'GMT - INFORMA'])
+                            ->setTo($email_usuario)
+                            ->setSubject('Nova Mensagem! - Solicitação de Transporte '.$model->id.'')
+                            ->setTextBody('Por favor, verique uma nova mensagem na solicitação de transporte de código: '.$model->id.' com status de '.$model->situacao->nome.' ')
+                            ->setHtmlBody('<p>Prezado(a), <span style="color:rgb(247, 148, 29)"><strong>'.$model->usuario_solic_nome.'</strong></span></p>
+
+                            <p>A solicita&ccedil;&atilde;o de transporte de c&oacute;digo <span style="color:rgb(247, 148, 29)"><strong>'.$model->id.'</strong></span> foi atualizada:</p>
+
+                            <p><strong>Mensagem</strong>: '.$forum->mensagem.'</p>
+
+                            <p><strong>Respons&aacute;vel pelo Atendimento</strong>: '.$model->usuario_suport_nome.'</p>
+
+                            <p>Por favor, n&atilde;o responda esse e-mail. Acesse http://portalsenac.am.senac.br</p>
+
+                            <p>Atenciosamente,&nbsp;</p>
+
+                            <p>Ger&ecirc;ncia de Materiais e Transporte - GMT</p>')
+                            ->send();
+               } 
+
+
             //MENSAGEM DE CONFIRMAÇÃO
             Yii::$app->session->setFlash('success', '<strong>SUCESSO! </strong> A solicitação de Transporte de código <strong>' .$model->id. '</strong> foi ATUALIZADA!</strong>');
 
@@ -125,12 +158,52 @@ class TransporteAdminController extends Controller
         //Atualiza a Solicitação para Agendado e inclui o usuário que está realizando o agendamento
         $model->idusuario_suport = $session['sess_codusuario'];
         $model->usuario_suport_nome = $session['sess_nomeusuario'];
+        $model->cod_unidade_suport = $session['sess_codunidade'];
 
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
 
             $model->situacao_id = 2; //Agendado
             $model->save();
+
+     if($model->situacao_id == 2){
+
+         //ENVIANDO EMAIL PARA O USUÁRIO INFORMANDO SOBRE A SITUAÇÃO, MOTORISTA, CONFIRMAÇÃO DE DATA E HORA, RESPONSÁVEL PELO ATENDIMENTO....
+          $sql_email = "SELECT emus_email FROM `db_base`.emailusuario_emus WHERE emus_codusuario = '".$model->idusuario_solic."'";
+      
+      $email_solicitacao = Emailusuario::findBySql($sql_email)->all(); 
+      foreach ($email_solicitacao as $email)
+          {
+            $email_usuario  = $email["emus_email"];
+
+                            Yii::$app->mailer->compose()
+                            ->setFrom(['gmt@am.senac.br' => 'GMT - INFORMA'])
+                            ->setTo($email_usuario)
+                            ->setSubject('Solicitação de Transporte '.$model->id.' - ' . $model->situacao->nome)
+                            ->setTextBody('A solicitação de transporte de código: '.$model->id.' está com status de '.$model->situacao->nome.' ')
+                            ->setHtmlBody('<p>Prezado(a), <span style="color:rgb(247, 148, 29)"><strong>'.$model->usuario_solic_nome.'</strong></span></p>
+
+                            <p>A solicita&ccedil;&atilde;o de transporte de c&oacute;digo <span style="color:rgb(247, 148, 29)"><strong>'.$model->id.'</strong></span> foi atualizada:</p>
+
+                            <p><strong>Situa&ccedil;&atilde;o</strong>: '.$model->situacao->nome.'</p>
+
+                            <p><strong>Motorista Respons&aacute;vel</strong>: '.$model->motorista->descricao.'</p>
+
+                            <p><strong>Data Confirmada</strong>: '.date('d/m/Y', strtotime($model->data_confirmacao)).'</p>
+
+                            <p><strong>Hora Confirmada</strong>: '.$model->hora_confirmacao.'</p>
+
+                            <p><strong>Respons&aacute;vel pelo Atendimento</strong>: '.$model->usuario_suport_nome.'</p>
+
+                            <p>Por favor, n&atilde;o responda esse e-mail. Acesse http://portalsenac.am.senac.br</p>
+
+                            <p>Atenciosamente,&nbsp;</p>
+
+                            <p>Ger&ecirc;ncia de Materiais e Transporte - GMT</p>')
+                                                        ->send();
+                                                    } 
+
+        }
 
             //MENSAGEM DE CONFIRMAÇÃO
             Yii::$app->session->setFlash('success', '<strong>SUCESSO! </strong> A solicitação de Transporte de código <strong>' .$model->id. '</strong> foi ATUALIZADA!</strong>');
@@ -145,6 +218,61 @@ class TransporteAdminController extends Controller
             ]);
         }
     }
+
+
+
+    public function actionEncerrar($id)
+    {
+     $session = Yii::$app->session;
+
+     $model = $this->findModel($id);
+
+     $model->usuario_encerramento = $session['sess_nomeusuario'];
+     $model->data_encerramento = date('Y-m-d H:i:s');
+
+     //encerra a solicitação de transporte
+     $connection = Yii::$app->db;
+     $command = $connection->createCommand(
+     "UPDATE `db_gmt`.`transporte` SET `situacao_id` = '3' , `usuario_encerramento` = '".$model->usuario_encerramento."', `data_encerramento` = '".$model->data_encerramento."' WHERE `id` = '".$model->id."'");
+     $command->execute();
+
+     $model->situacao_id = 3;
+     if($model->situacao_id == 3){
+
+         //ENVIANDO EMAIL PARA O USUÁRIO INFORMANDO SOBRE A SOLICITAÇÃO QUE FOI ENCERRADA
+          $sql_email = "SELECT emus_email FROM `db_base`.emailusuario_emus WHERE emus_codusuario = '".$model->idusuario_solic."'";
+      
+      $email_solicitacao = Emailusuario::findBySql($sql_email)->all(); 
+      foreach ($email_solicitacao as $email)
+          {
+            $email_usuario  = $email["emus_email"];
+
+                            Yii::$app->mailer->compose()
+                            ->setFrom(['gmt@am.senac.br' => 'GMT - INFORMA'])
+                            ->setTo($email_usuario)
+                            ->setSubject('Solicitação de Transporte '.$model->id.' - ' . $model->situacao->nome)
+                            ->setTextBody('A solicitação de transporte de código: '.$model->id.' está com status de '.$model->situacao->nome.' ')
+                            ->setHtmlBody('<p>Prezado(a), '.$model->usuario_solic_nome.'  <br><br>A solicitação de transporte de <strong style="color: #337ab7"">código: '.$model->id.'</strong> com status de '.$model->situacao->nome.'. <br> Por favor, não responda esse e-mail. Acesse http://portalsenac.am.senac.br para ANALISAR a solicitação de transporte. <br><br> Atenciosamente, <br> Gerência de Materiais e Transporte - GMT</p>')
+                            ->send();
+                        } 
+
+        }
+
+ //MENSAGEM DE CONFIRMAÇÃO DA SOLICITAÇÃO DE CONTRATAÇÃO ENCERRADA  
+                Yii::$app->getSession()->setFlash('success', [
+                         'type' => 'success',
+                         'duration' => 5000,
+                         'icon' => 'glyphicon glyphicon-ok',
+                         'message' => 'A Solicitação de Transporte foi FINALIZADA',
+                         'title' => 'Solicitação de Transporte',
+                         'positonY' => 'top',
+                         'positonX' => 'right'
+                     ]);
+     
+return $this->redirect(['index']);
+
+    }
+
 
     /**
      * Deletes an existing TransporteAdmin model.

@@ -91,10 +91,10 @@ class TransporteAdminSearch extends TransporteAdmin
             'hora_confirmacao' => $this->hora_confirmacao,
             'tipo_solic_id' => $this->tipo_solic_id,
             'tipocarga_id' => $this->tipocarga_id,
-            'situacao_id' => $this->situacao_id,
             'motorista_id' => $this->motorista_id,
             'idusuario_solic' => $this->idusuario_solic,
             'idusuario_suport' => $this->idusuario_suport,
+            'situacao_id' => 2, //SOLICITAÇÕES ENCAMINHADAS PARA PROVIDÊNCIAS
         ]);
 
         $query->andFilterWhere(['like', 'descricao_transporte', $this->descricao_transporte])

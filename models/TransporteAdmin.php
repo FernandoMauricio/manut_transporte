@@ -56,9 +56,9 @@ class TransporteAdmin extends \yii\db\ActiveRecord
     {
         return [
             [['data_solicitacao', 'data_confirmacao', 'hora_confirmacao', 'bairro_id', 'tipocarga_id', 'idusuario_solic', 'usuario_solic_nome', 'usuario_suport_nome', 'motorista_id'], 'required'],
-            [['data_solicitacao', 'data_prevista', 'hora_prevista', 'data_confirmacao', 'hora_confirmacao','tipo_transporte_label', 'tipo_carga_label', 'bairro_label', 'situacao_label', 'motorista_label'], 'safe'],
+            [['data_solicitacao', 'data_prevista', 'hora_prevista', 'data_confirmacao', 'hora_confirmacao','tipo_transporte_label', 'tipo_carga_label', 'bairro_label', 'situacao_label', 'motorista_label', 'usuario_encerramento', 'data_encerramento'], 'safe'],
             [['descricao_transporte'], 'string'],
-            [['bairro_id', 'tipo_solic_id', 'tipocarga_id', 'situacao_id', 'idusuario_solic', 'idusuario_suport'], 'integer'],
+            [['bairro_id', 'tipo_solic_id', 'tipocarga_id', 'situacao_id', 'idusuario_solic', 'idusuario_suport', 'cod_unidade_solic', 'cod_unidade_suport'], 'integer'],
             [['local'], 'string', 'max' => 100],
             [['usuario_solic_nome', 'usuario_suport_nome'], 'string', 'max' => 45],
             [['tipo_solic_id'], 'exist', 'skipOnError' => true, 'targetClass' => TipoSolic::className(), 'targetAttribute' => ['tipo_solic_id' => 'id']],
@@ -92,6 +92,8 @@ class TransporteAdmin extends \yii\db\ActiveRecord
             'usuario_solic_nome'=>'Solicitante',
             'idusuario_suport' => 'ID Usuário Suporte',
             'usuario_suport_nome'=>'Responsável pelo Atendimento',
+            'usuario_encerramento'=>'Solicitação encerrada por:',
+            'data_encerramento'=>'Data de Encerramento',
 
             'tipo_transporte_label' => 'Tipo de Solicitação',
             'bairro_label' => 'Bairro',

@@ -21,7 +21,9 @@ use Yii;
  * @property integer $situacao_id
  * @property integer $motorista_id
  * @property integer $idusuario_solic
+ * @property string $usuario_solic_nome
  * @property integer $idusuario_suport
+ * @property string $usuario_suport_nome
  *
  * @property Forum[] $forums
  * @property TipoSolic $tipoSolic
@@ -30,12 +32,14 @@ use Yii;
  * @property Motorista $motorista
  * @property TipoCarga $tipocarga
  */
-class Transporte extends \yii\db\ActiveRecord
+class TransporteAdminEncerradas extends \yii\db\ActiveRecord
 {
-    public $tipo_transporte;
+
+    public $tipo_transporte_label;
     public $tipo_carga_label;
-    public $motorista_label;
+    public $bairro_label;
     public $situacao_label;
+    public $motorista_label;
 
     /**
      * @inheritdoc
@@ -51,11 +55,12 @@ class Transporte extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['data_solicitacao', 'bairro_id', 'tipocarga_id', 'local', 'descricao_transporte', 'data_prevista', 'hora_prevista', 'idusuario_solic', 'usuario_solic_nome'], 'required'],
-            [['data_solicitacao', 'data_prevista', 'hora_prevista', 'data_confirmacao', 'hora_confirmacao', 'tipo_transporte', 'tipo_carga_label','motorista_label', 'situacao_label'], 'safe'],
+            [['data_solicitacao', 'data_confirmacao', 'hora_confirmacao', 'bairro_id', 'tipocarga_id', 'idusuario_solic', 'usuario_solic_nome', 'usuario_suport_nome', 'motorista_id'], 'required'],
+            [['data_solicitacao', 'data_prevista', 'hora_prevista', 'data_confirmacao', 'hora_confirmacao','tipo_transporte_label', 'tipo_carga_label', 'bairro_label', 'situacao_label', 'motorista_label', 'usuario_encerramento', 'data_encerramento'], 'safe'],
             [['descricao_transporte'], 'string'],
-            [['bairro_id', 'tipo_solic_id', 'tipocarga_id', 'situacao_id', 'motorista_id', 'idusuario_solic', 'idusuario_suport', 'cod_unidade_solic', 'cod_unidade_suport'], 'integer'],
+            [['bairro_id', 'tipo_solic_id', 'tipocarga_id', 'situacao_id', 'idusuario_solic', 'idusuario_suport', 'cod_unidade_solic', 'cod_unidade_suport'], 'integer'],
             [['local'], 'string', 'max' => 100],
+            [['usuario_solic_nome', 'usuario_suport_nome'], 'string', 'max' => 45],
             [['tipo_solic_id'], 'exist', 'skipOnError' => true, 'targetClass' => TipoSolic::className(), 'targetAttribute' => ['tipo_solic_id' => 'id']],
             [['situacao_id'], 'exist', 'skipOnError' => true, 'targetClass' => Situacao::className(), 'targetAttribute' => ['situacao_id' => 'id']],
             [['bairro_id'], 'exist', 'skipOnError' => true, 'targetClass' => Bairro::className(), 'targetAttribute' => ['bairro_id' => 'idbairro']],
@@ -81,17 +86,20 @@ class Transporte extends \yii\db\ActiveRecord
             'hora_confirmacao' => 'Hora Confirmada',
             'tipo_solic_id' => 'Tipo de Solicitação',
             'tipocarga_id' => 'Tipo de Carga',
-            'situacao_id' => 'Situacao ID',
-            'motorista_id' => 'Motorista ID',
+            'situacao_id' => 'Situação',
+            'motorista_id' => 'Motorista Responsável',
             'idusuario_solic' => 'ID Usuário Solicitante',
             'usuario_solic_nome'=>'Solicitante',
             'idusuario_suport' => 'ID Usuário Suporte',
             'usuario_suport_nome'=>'Responsável pelo Atendimento',
-           
-            'tipo_transporte' => 'Tipo de Solicitação',
-            'tipo_carga_label' => 'Tipo de Carga',
-            'motorista_label' => 'Motorista Responsável',
+            'usuario_encerramento'=>'Solicitação encerrada por:',
+            'data_encerramento'=>'Data de Encerramento',
+
+            'tipo_transporte_label' => 'Tipo de Solicitação',
+            'bairro_label' => 'Bairro',
             'situacao_label' => 'Situação',
+            'tipo_carga_label' => 'Tipo de Carga',
+            'motorista_label' => 'Motorista Responsável'
 
         ];
     }
@@ -143,5 +151,4 @@ class Transporte extends \yii\db\ActiveRecord
     {
         return $this->hasOne(TipoCarga::className(), ['idtipo_carga' => 'tipocarga_id']);
     }
-
 }

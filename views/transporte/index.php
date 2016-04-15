@@ -1,12 +1,15 @@
 <?php
 
 use yii\helpers\Html;
-//use yii\grid\GridView;
-use kartik\grid\GridView;
-use yii\widgets\Pjax;
 use yii\helpers\ArrayHelper;
-use kartik\widgets\DatePicker;
+use kartik\grid\GridView;
+use kartik\export\ExportMenu;
 use app\models\TipoCarga;
+use app\models\Motorista;
+use app\models\Situacao;
+use kartik\widgets\DatePicker;
+use kartik\widgets\Select2;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\TransporteSearch */
@@ -33,7 +36,8 @@ echo '<div class="alert alert-'.$key.'">'.$message.'</div>';
         <?php
 
         $gridColumns = [
-
+                    ['class' => 'yii\grid\SerialColumn'],
+                    
                     'id',
 
                     [
@@ -43,7 +47,6 @@ echo '<div class="alert alert-'.$key.'">'.$message.'</div>';
                     [
                         'attribute' => 'data_solicitacao',
                         'format' => ['date', 'php:d/m/Y'],
-                        //'width' => '100px',
                         'hAlign' => 'center',
                         'filter'=> DatePicker::widget([
                         'model' => $searchModel, 
@@ -71,7 +74,6 @@ echo '<div class="alert alert-'.$key.'">'.$message.'</div>';
                         'format'=>'raw'
                     ],
 
-                    'descricao_transporte:ntext',
                     [
                         'attribute' => 'local',
                         'width' => '2500px',
@@ -82,18 +84,32 @@ echo '<div class="alert alert-'.$key.'">'.$message.'</div>';
                         'value' => 'bairro.descricao',
                        
                     ],
-                     // 'data_prevista',
-                     // 'hora_prevista',
-                     // 'data_confirmacao',
-                     // 'hora_confirmacao',
-                    // 'tipo_solic_id',
-                    // 'tipocarga_id',
-                    // 'situacao_id',
-                    // 'motorista_id',
-                    // 'idusuario_solic',
-                    // 'usuario_solic_nome',
-                    // 'idusuario_suport',
-                    // 'usuario_suport_nome',
+
+                    [
+                        'attribute'=>'motorista_label', 
+                        'width'=>'460px',
+                        'value'=> 'motorista.descricao',
+                        'filterType'=>GridView::FILTER_SELECT2,
+                        'filter'=>ArrayHelper::map(Motorista::find()->asArray()->all(), 'descricao', 'descricao'), 
+                        'filterWidgetOptions'=>[
+                            'pluginOptions'=>['allowClear'=>true],
+                        ],
+                        'filterInputOptions'=>['placeholder'=>'Motorista'],
+                        'format'=>'raw'
+                    ],
+
+                    [
+                        'attribute'=>'situacao_label', 
+                        'width'=>'460px',
+                        'value'=> 'situacao.nome',
+                        'filterType'=>GridView::FILTER_SELECT2,
+                        'filter'=>ArrayHelper::map(Situacao::find()->asArray()->all(), 'nome', 'nome'), 
+                        'filterWidgetOptions'=>[
+                            'pluginOptions'=>['allowClear'=>true],
+                        ],
+                        'filterInputOptions'=>['placeholder'=>'Situação'],
+                        'format'=>'raw'
+                    ],
 
                     ['class' => 'yii\grid\ActionColumn' ,'template' => ' {view}'],
                 ];
@@ -106,6 +122,16 @@ echo '<div class="alert alert-'.$key.'">'.$message.'</div>';
     echo GridView::widget([
     'dataProvider'=>$dataProvider,
     'filterModel'=>$searchModel,
+    'rowOptions' =>function($model){
+                    if($model->situacao_id == '3' ){
+
+                            return['class'=>'danger'];                        
+                    } if($model->situacao_id == '2' ){
+
+                            return['class'=>'info'];                        
+                    }
+
+        },
     'columns'=>$gridColumns,
     //'containerOptions'=>['style'=>'overflow: auto'], // only set when $responsive = false
     'headerRowOptions'=>['class'=>'kartik-sheet-style'],
@@ -119,7 +145,7 @@ echo '<div class="alert alert-'.$key.'">'.$message.'</div>';
     'beforeHeader'=>[
         [
             'columns'=>[
-                ['content'=>'Detalhes das Solicitações de Transporte', 'options'=>['colspan'=>7, 'class'=>'text-center warning']], 
+                ['content'=>'Detalhes das Solicitações de Transporte', 'options'=>['colspan'=>9, 'class'=>'text-center warning']], 
                 ['content'=>'Ações', 'options'=>['colspan'=>3, 'class'=>'text-center warning']],  
             ],
         ]

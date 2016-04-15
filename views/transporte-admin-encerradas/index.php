@@ -1,4 +1,5 @@
 <?php
+
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use kartik\grid\GridView;
@@ -10,35 +11,15 @@ use kartik\widgets\Select2;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\TransporteSearch */
+/* @var $searchModel app\models\TransporteAdminEncerradasSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-$this->title = 'Solicitações de Transporte  ';
+
+$this->title = 'Solicitações de Transporte Encerradas ';
 $this->params['breadcrumbs'][] = $this->title;
+?>
+<div class="transporte-admin-encerradas-index">
 
-//Get all flash messages and loop through them
-foreach (Yii::$app->session->getAllFlashes() as $message):; ?>
-            <?php
-            echo \kartik\widgets\Growl::widget([
-                'type' => (!empty($message['type'])) ? $message['type'] : 'danger',
-                'title' => (!empty($message['title'])) ? Html::encode($message['title']) : '',
-                'icon' => (!empty($message['icon'])) ? $message['icon'] : 'fa fa-info',
-                'body' => (!empty($message['message'])) ? Html::encode($message['message']) : '',
-                'showSeparator' => true,
-                'delay' => 1, //This delay is how long before the message shows
-                'pluginOptions' => [
-                    'delay' => (!empty($message['duration'])) ? $message['duration'] : 3000, //This delay is how long the message shows for
-                    'placement' => [
-                        'from' => (!empty($message['positonY'])) ? $message['positonY'] : '',
-                        'align' => (!empty($message['positonX'])) ? $message['positonX'] : '',
-                    ]
-                ]
-            ]);
-            ?>
-        <?php endforeach; ?>
-
-<div class="transporte-index">
-
-    <h1><?= Html::encode($this->title) . '<small>Área Administrativa</small>'  ?></h1>
+   <h1><?= Html::encode($this->title) . '<small>Área Administrativa</small>'  ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
 <?php
@@ -119,7 +100,7 @@ $gridColumns = [
              'hora_confirmacao',
 
             ['class' => 'yii\grid\ActionColumn',
-            'template' => '{view} {update} {encerrar}',
+            'template' => '{view}',
             'buttons' => [
 
             //VISUALIZAR SOLICITAÇÃO DE TRANSPORTE
@@ -127,24 +108,6 @@ $gridColumns = [
                 return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
                                 'title' => Yii::t('app', 'Visualizar'),
                                    ]);
-            },
-
-            //VISUALIZAR SOLICITAÇÃO DE TRANSPORTE
-            'update' => function ($url, $model) {
-                return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
-                                'title' => Yii::t('app', 'Atualizar'),
-                                   ]);
-            },
-
-            //ENCERRAR SOLICITAÇÃO DE TRANSPORTE
-            'encerrar' => function ($url, $model) {
-                return Html::a('<span class="glyphicon glyphicon-floppy-save"></span>', $url, [
-                            'title' => Yii::t('app', 'Encerrar Solicitação'),
-                            'data' => [
-                                            'confirm' => 'Você tem CERTEZA que deseja ENCERRAR a solicitação?',
-                                            'method' => 'post',
-                                        ],
-                ]);
             },
         ],
       ],
@@ -191,7 +154,7 @@ $gridColumns = [
         'hover' => true,
         'panel' => [
         'type'=>GridView::TYPE_PRIMARY,
-        'heading'=> '<h3 class="panel-title"><i class="glyphicon glyphicon-book"></i> Listagem das Solicitações de Transporte</h3>',
+        'heading'=> '<h3 class="panel-title"><i class="glyphicon glyphicon-book"></i> Listagem das Solicitações de Transporte Encerradas </h3>',
         'persistResize'=>false,
     ],
 ]);

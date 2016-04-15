@@ -6,6 +6,7 @@ use Yii;
 use app\models\Bairro;
 use app\models\Forum;
 use app\models\Motorista;
+use app\models\Emailusuario;
 use app\models\Transporte;
 use app\models\TransporteSearch;
 use app\models\TipoCarga;
@@ -69,6 +70,34 @@ class TransporteController extends Controller
         //CONVERSA ENTRE USUARIO E SUPORTE
         if ($forum->load(Yii::$app->request->post()) && $forum->save()) {
 
+         //ENVIANDO EMAIL PARA O USUÁRIO INFORMANDO SOBRE UMA NOVA MENSAGEM....
+          $sql_email = "SELECT emus_email FROM `db_base`.emailusuario_emus WHERE emus_codusuario = '".$model->idusuario_suport."'";
+      
+      $email_solicitacao = Emailusuario::findBySql($sql_email)->all(); 
+      foreach ($email_solicitacao as $email)
+          {
+            $email_usuario  = $email["emus_email"];
+
+                            Yii::$app->mailer->compose()
+                            ->setFrom(['gmt@am.senac.br' => 'GMT - INFORMA'])
+                            ->setTo($email_usuario)
+                            ->setSubject('Nova Mensagem! - Solicitação de Transporte '.$model->id.'')
+                            ->setTextBody('Por favor, verique uma nova mensagem na solicitação de transporte de código: '.$model->id.' com status de '.$model->situacao->nome.' ')
+                            ->setHtmlBody('<p>Prezado(a), <span style="color:rgb(247, 148, 29)"><strong>'.$model->usuario_suport_nome.'</strong></span></p>
+
+                            <p>A solicita&ccedil;&atilde;o de transporte de c&oacute;digo <span style="color:rgb(247, 148, 29)"><strong>'.$model->id.'</strong></span> foi atualizada:</p>
+
+                            <p><strong>Mensagem</strong>: '.$forum->mensagem.'</p>
+
+                            <p>Por favor, n&atilde;o responda esse e-mail. Acesse http://portalsenac.am.senac.br</p>
+
+                            <p>Atenciosamente,&nbsp;</p>
+
+                            <p>Ger&ecirc;ncia de Materiais e Transporte - GMT</p>')
+                            ->send();
+               } 
+
+
             //MENSAGEM DE CONFIRMAÇÃO
             Yii::$app->session->setFlash('success', '<strong>SUCESSO! </strong> A solicitação de Transporte de código <strong>' .$model->id. '</strong> foi ATUALIZADA!</strong>');
 
@@ -105,6 +134,7 @@ class TransporteController extends Controller
         $model->tipo_solic_id = 1;
         $model->idusuario_solic = $session['sess_codusuario'];
         $model->usuario_solic_nome = $session['sess_nomeusuario'];
+        $model->cod_unidade_solic = $session['sess_codunidade'];
 
 
 

@@ -8,6 +8,7 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
+use kartik\nav\NavX;
 
 AppAsset::register($this);
 ?>
@@ -33,25 +34,41 @@ AppAsset::register($this);
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
-   echo Nav::widget([
+   echo NavX::widget([
                 'options' => ['class' => 'navbar-nav navbar-right'],
+
                 'items' => [
 
                     ['label' => 'Solicitações',
                 'items' => [
                  '<li class="dropdown-header">Novas Solicitações</li>',
-                 ['label' => 'Solicitação de Transporte', 'url' => ['/transporte/index']],
-                 ['label' => 'Solicitação de Manutenção', 'url' => ['/manutencao/index']],
+                 ['label' => 'Solicitação de Transporte', 'url' => ['transporte/index']],
+                 ['label' => 'Solicitação de Manutenção', 'url' => ['manutencao/index']],
                            ],            
                     ],
 
-                    ['label' => 'Administração',
-                'items' => [
-                 '<li class="dropdown-header">Área Administrativa</li>',
-                 ['label' => 'Atendimento das Solicitações', 'url' => ['transporte-admin/index']],
-                 ['label' => 'Cadastro de Motorista', 'url' => ['motorista/index']],
-                           ],            
-                    ],
+                    ['label' => 'Administração', 'items' => [
+
+                ['label' => 'Solicitações de Transporte', 'items' => [
+                '<li class="dropdown-header">Controle de Solicitações</li>',
+                    ['label' => 'Atendimento das Solicitações', 'url' => ['transporte-admin/index']],
+                    ['label' => 'Solicitações Encerradas', 'url' => ['transporte-admin-encerradas/index']],
+                ]],
+
+                ['label' => 'Solicitações de Manutenção', 'items' => [
+                '<li class="dropdown-header">Controle de Solicitações</li>',
+                    ['label' => 'Atendimento das Solicitações', 'url' => ['manutencao-admin/index']],
+                    ['label' => 'Solicitações Encerradas', 'url' => ['manutencao-admin-encerradas/index']],
+                ]],
+
+
+                '<li class="divider"></li>',
+                ['label' => 'Configuração', 'items' => [
+                '<li class="dropdown-header">Cadastros</li>',
+                    ['label' => 'Motoristas', 'url' => ['motorista/index']],
+
+                ]],
+            ]],
 
             ['label' => 'Sair', 'url' => 'http://portalsenac.am.senac.br/portal_senac/control_base_vermodulos/control_base_vermodulos.php'],
 
@@ -70,9 +87,7 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
-
-        <p class="pull-right"><?= Yii::powered() ?></p>
+        <p class="pull-left">&copy; Gerência de Informática Corporativa <?= date('Y') ?></p>
     </div>
 </footer>
 
