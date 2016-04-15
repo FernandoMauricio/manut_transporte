@@ -93,7 +93,7 @@ class TransporteController extends Controller
 
                             <p>Atenciosamente,&nbsp;</p>
 
-                            <p>Ger&ecirc;ncia de Materiais e Transporte - GMT</p>')
+                            <p>Ger&ecirc;ncia de Manutenção e Transporte - GMT</p>')
                             ->send();
                } 
 
@@ -129,18 +129,42 @@ class TransporteController extends Controller
         $bairros = Bairro::find()->all();
         $tipoCarga = TipoCarga::find()->all();
 
-
         //Encaminhado para providências
         $model->tipo_solic_id = 1;
         $model->idusuario_solic = $session['sess_codusuario'];
         $model->usuario_solic_nome = $session['sess_nomeusuario'];
         $model->cod_unidade_solic = $session['sess_codunidade'];
-
-
-
         $model->data_solicitacao = date('Y-m-d');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+        //ENVIANDO EMAIL PARA OS RESPONSÁVEIS DO GMT INFORMANDO SOBRE O RECEBIMENTO DE UMA NOVA SOLICITAÇÃO DE TRANSPORTE 
+        //-- 12 - GERENCIA DE MATERIAIS E TRANSPORTE // 16 - SEDE ADMINISTRATIVA GMT
+                  $sql_email = "SELECT DISTINCT emus_email FROM emailusuario_emus,colaborador_col,responsavelambiente_ream,responsaveldepartamento_rede WHERE ream_codunidade = '12' AND rede_coddepartamento = '16' AND rede_codcolaborador = col_codcolaborador AND col_codusuario = emus_codusuario";
+              
+              $email_solicitacao = Emailusuario::findBySql($sql_email)->all(); 
+              foreach ($email_solicitacao as $email)
+                  {
+                    $email_usuario  = $email["emus_email"];
+
+                                    Yii::$app->mailer->compose()
+                                    ->setFrom(['gmt@am.senac.br' => 'GMT - INFORMA'])
+                                    ->setTo($email_usuario)
+                                    ->setSubject('Solicitação de Transporte - ' . $model->id)
+                                    ->setTextBody('Existe uma solicitação de Transporte de código: '.$model->id.' - PENDENTE')
+                                    ->setHtmlBody('<p>Prezado(a) Senhor(a),</p>
+
+                                    <p>Existe uma solicita&ccedil;&atilde;o de transporte de c&oacute;digo: <strong><span style="color:#F7941D">'.$model->id.' </span></strong>- <strong><span style="color:#F7941D">PENDENTE</span></strong></p>
+
+                                    <p>Por favor, n&atilde;o responda esse e-mail. Acesse http://portalsenac.am.senac.br para ANALISAR a solicita&ccedil;&atilde;o de transporte.</p>
+
+                                    <p>Atenciosamente,</p>
+
+                                    <p>Ger&ecirc;ncia de Manuten&ccedil;&atilde;o e Transporte -&nbsp;GMT</p>
+                                    ')
+                                    ->send();
+                                } 
+
 
             //MENSAGEM DE CONFIRMAÇÃO
             Yii::$app->session->setFlash('success', '<strong>SUCESSO! </strong> Solicitação de Transporte <strong> criada!</strong>');
