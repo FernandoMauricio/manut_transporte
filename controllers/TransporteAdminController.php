@@ -252,7 +252,19 @@ class TransporteAdminController extends Controller
                             ->setTo($email_usuario)
                             ->setSubject('Solicitação de Transporte '.$model->id.' - ' . $model->situacao->nome)
                             ->setTextBody('A solicitação de transporte de código: '.$model->id.' está com status de '.$model->situacao->nome.' ')
-                            ->setHtmlBody('<p>Prezado(a), '.$model->usuario_solic_nome.'  <br><br>A solicitação de transporte de <strong style="color: #337ab7"">código: '.$model->id.'</strong> com status de '.$model->situacao->nome.'. <br> Por favor, não responda esse e-mail. Acesse http://portalsenac.am.senac.br para ANALISAR a solicitação de transporte. <br><br> Atenciosamente, <br> Gerência de Manutenção e Transporte - GMT</p>')
+                            ->setHtmlBody('<p>Prezado(a), <span style="color:rgb(247, 148, 29)"><strong>'.$model->usuario_solic_nome.'</strong></span></p>
+
+                            <p>A solicita&ccedil;&atilde;o de transporte de c&oacute;digo <span style="color:rgb(247, 148, 29)"><strong>'.$model->id.'</strong></span> foi atualizada:</p>
+
+                            <p><strong>Respons&aacute;vel pelo Encerramento</strong>: '.$model->usuario_encerramento.'</p>
+
+                            <p><strong>Data do Encerramento</strong>: '.date('d/m/Y H:i', strtotime($model->data_encerramento)).'</p>
+
+                            <p>Por favor, n&atilde;o responda esse e-mail. Acesse http://portalsenac.am.senac.br</p>
+
+                            <p>Atenciosamente,&nbsp;</p>
+
+                            <p>Ger&ecirc;ncia de Manutenção e Transporte - GMT</p>')
                             ->send();
                         } 
 

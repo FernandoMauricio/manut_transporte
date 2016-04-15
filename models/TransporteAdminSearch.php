@@ -94,7 +94,7 @@ class TransporteAdminSearch extends TransporteAdmin
             'motorista_id' => $this->motorista_id,
             'idusuario_solic' => $this->idusuario_solic,
             'idusuario_suport' => $this->idusuario_suport,
-            'situacao_id' => 2, //SOLICITAÇÕES ENCAMINHADAS PARA PROVIDÊNCIAS
+            'situacao_id' => [1,2], //SOLICITAÇÕES ENCAMINHADAS PARA PROVIDÊNCIAS
         ]);
 
         $query->andFilterWhere(['like', 'descricao_transporte', $this->descricao_transporte])
