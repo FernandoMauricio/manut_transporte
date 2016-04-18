@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\ManutencaoAdmin;
+use app\models\ManutencaoAdminAcompanhamento;
 
 /**
- * ManutencaoAdminSearch represents the model behind the search form about `app\models\ManutencaoAdmin`.
+ * ManutencaoAdminAcompanhamentoSearch represents the model behind the search form about `app\models\ManutencaoAdminAcompanhamento`.
  */
-class ManutencaoAdminSearch extends ManutencaoAdmin
+class ManutencaoAdminAcompanhamentoSearch extends ManutencaoAdminAcompanhamento
 {
     /**
      * @inheritdoc
@@ -18,7 +18,7 @@ class ManutencaoAdminSearch extends ManutencaoAdmin
     public function rules()
     {
         return [
-            [['id', 'idusuario_solic', 'idusuario_suport', 'cod_unidade_solic', 'cod_unidade_suport', 'tipo_solic_id'], 'integer'],
+            [['id', 'idusuario_solic', 'idusuario_suport', 'cod_unidade_solic', 'cod_unidade_suport', 'tipo_solic_id', 'situacao_id'], 'integer'],
             [['data_solicitacao', 'titulo', 'descricao_manut', 'usuario_solic_nome', 'usuario_suport_nome', 'usuario_encerramento', 'data_encerramento', 'situacao_label'], 'safe'],
         ];
     }
@@ -30,6 +30,7 @@ class ManutencaoAdminSearch extends ManutencaoAdmin
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
+        
     }
 
     /**
@@ -41,7 +42,7 @@ class ManutencaoAdminSearch extends ManutencaoAdmin
      */
     public function search($params)
     {
-        $query = Manutencao::find()
+        $query = ManutencaoAdminAcompanhamento::find()
         ->orderBy(['id' => SORT_DESC]);
 
         // add conditions that should always apply here
@@ -49,7 +50,6 @@ class ManutencaoAdminSearch extends ManutencaoAdmin
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-
 
         $dataProvider->sort->attributes['situacao_label'] = [
         'asc' => ['situacao.nome' => SORT_ASC],
@@ -75,7 +75,8 @@ class ManutencaoAdminSearch extends ManutencaoAdmin
             'cod_unidade_solic' => $this->cod_unidade_solic,
             'cod_unidade_suport' => $this->cod_unidade_suport,
             'tipo_solic_id' => $this->tipo_solic_id,
-            'situacao_id' => 1, //SOLICITAÇÕES ENCAMINHADAS PARA PROVIDÊNCIAS
+            'situacao_id' => $this->situacao_id,
+            'situacao_id' => [2,3], //SOLICITAÇÕES DE MANUTENÇÃO Acompanhamento
         ]);
 
         $query->andFilterWhere(['like', 'titulo', $this->titulo])

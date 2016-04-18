@@ -48,13 +48,13 @@ if($session['sess_codunidade'] == 12 && $session['sess_coddepartamento'] == 16 )
                 ['label' => 'Solicitações de Transporte', 'items' => [
                 '<li class="dropdown-header">Controle de Solicitações</li>',
                     ['label' => 'Atendimento das Solicitações', 'url' => ['transporte-admin/index']],
-                    ['label' => 'Solicitações Encerradas', 'url' => ['transporte-admin-encerradas/index']],
+                    ['label' => 'Acompanhamento das Solicitações', 'url' => ['transporte-admin-acompanhamento/index']],
                 ]],
 
                 ['label' => 'Solicitações de Manutenção', 'items' => [
                 '<li class="dropdown-header">Controle de Solicitações</li>',
                     ['label' => 'Atendimento das Solicitações', 'url' => ['manutencao-admin/index']],
-                    ['label' => 'Solicitações Encerradas', 'url' => ['manutencao-admin-encerradas/index']],
+                    ['label' => 'Acompanhamento das Solicitações', 'url' => ['manutencao-admin-acompanhamento/index']],
                 ]],
 
 

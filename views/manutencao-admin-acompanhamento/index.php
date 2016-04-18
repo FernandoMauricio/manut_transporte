@@ -9,7 +9,7 @@ use app\models\Situacao;
 
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\ManutencaoAdminSearch */
+/* @var $searchModel app\models\ManutencaoAdminAcompanhamentoSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Solicitações de Manutenção ';
@@ -20,17 +20,12 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
 echo '<div class="alert alert-'.$key.'">'.$message.'</div>';
 }
 
+
 ?>
+<div class="manutencao-admin-acompanhamento-index">
 
-<div class="manutencao-admin-index">
-
-    <h1><?= Html::encode($this->title) . '<small>Pendentes</small>'  ?></h1>
+ <h1><?= Html::encode($this->title) . '<small>Acompanhamento</small>'  ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <?= Html::a('Nova Solicitação', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
 
     <?php
 
@@ -82,7 +77,7 @@ echo '<div class="alert alert-'.$key.'">'.$message.'</div>';
                     'format'=>'raw'
                 ],
 
-                ['class' => 'yii\grid\ActionColumn',
+               ['class' => 'yii\grid\ActionColumn',
             'template' => '{assumir} {view} {encerrar}',
             'contentOptions' => ['style' => 'width: 7%'],
             'buttons' => [
@@ -168,3 +163,4 @@ echo '<div class="alert alert-'.$key.'">'.$message.'</div>';
 
 
 </div>
+

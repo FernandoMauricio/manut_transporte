@@ -79,7 +79,7 @@ class TransporteController extends Controller
             $email_usuario  = $email["emus_email"];
 
                             Yii::$app->mailer->compose()
-                            ->setFrom(['gmt@am.senac.br' => 'GMT - INFORMA'])
+                            ->setFrom(['gmt.suporte@am.senac.br' => 'GMT - INFORMA'])
                             ->setTo($email_usuario)
                             ->setSubject('Nova Mensagem! - Solicitação de Transporte '.$model->id.'')
                             ->setTextBody('Por favor, verique uma nova mensagem na solicitação de transporte de código: '.$model->id.' com status de '.$model->situacao->nome.' ')
@@ -148,7 +148,7 @@ class TransporteController extends Controller
                     $email_usuario  = $email["emus_email"];
 
                                     Yii::$app->mailer->compose()
-                                    ->setFrom(['gmt@am.senac.br' => 'GMT - INFORMA'])
+                                    ->setFrom(['gmt.suporte@am.senac.br' => 'GMT - INFORMA'])
                                     ->setTo($email_usuario)
                                     ->setSubject('Solicitação de Transporte - ' . $model->id)
                                     ->setTextBody('Existe uma solicitação de Transporte de código: '.$model->id.' - PENDENTE')
@@ -211,7 +211,7 @@ class TransporteController extends Controller
      //encerra a solicitação de transporte
      $connection = Yii::$app->db;
      $command = $connection->createCommand(
-     "UPDATE `db_gmt`.`transporte` SET `situacao_id` = '3' , `usuario_encerramento` = '".$model->usuario_encerramento."', `data_encerramento` = '".$model->data_encerramento."' WHERE `id` = '".$model->id."'");
+     "UPDATE `db_manut_transporte`.`transporte` SET `situacao_id` = '3' , `usuario_encerramento` = '".$model->usuario_encerramento."', `data_encerramento` = '".$model->data_encerramento."' WHERE `id` = '".$model->id."'");
      $command->execute();
 
      $model->situacao_id = 3;
@@ -227,7 +227,7 @@ class TransporteController extends Controller
             $email_usuario  = $email["emus_email"];
 
                             Yii::$app->mailer->compose()
-                            ->setFrom(['gmt@am.senac.br' => 'GMT - INFORMA'])
+                            ->setFrom(['gmt.suporte@am.senac.br' => 'GMT - INFORMA'])
                             ->setTo($email_usuario)
                             ->setSubject('Solicitação de Transporte '.$model->id.' - ' . $model->situacao->nome)
                             ->setTextBody('A solicitação de transporte de código: '.$model->id.' está com status de '.$model->situacao->nome.' ')

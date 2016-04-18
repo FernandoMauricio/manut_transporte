@@ -8,18 +8,17 @@ use app\models\Forum;
 use app\models\Motorista;
 use app\models\TipoCarga;
 use app\models\Emailusuario;
-use app\models\TransporteAdmin;
-use app\models\TransporteAdminSearch;
+use app\models\TransporteAdminAcompanhamento;
+use app\models\TransporteAdminAcompanhamentoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * TransporteAdminController implements the CRUD actions for TransporteAdmin model.
+ * TransporteAdminAcompanhamentoController implements the CRUD actions for TransporteAdminAcompanhamento model.
  */
-class TransporteAdminController extends Controller
+class TransporteAdminAcompanhamentoController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -35,9 +34,8 @@ class TransporteAdminController extends Controller
         ];
     }
 
-
     /**
-     * Lists all TransporteAdmin models.
+     * Lists all TransporteAdminAcompanhamento models.
      * @return mixed
      */
     public function actionIndex()
@@ -56,7 +54,7 @@ class TransporteAdminController extends Controller
 
     }else
 
-        $searchModel = new TransporteAdminSearch();
+        $searchModel = new TransporteAdminAcompanhamentoSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -66,75 +64,19 @@ class TransporteAdminController extends Controller
     }
 
     /**
-     * Displays a single TransporteAdmin model.
+     * Displays a single TransporteAdminAcompanhamento model.
      * @param integer $id
      * @return mixed
      */
     public function actionView($id)
     {
         $session = Yii::$app->session;
-        if (!isset($session['sess_codusuario']) && !isset($session['sess_codcolaborador']) && !isset($session['sess_codunidade']) && !isset($session['sess_nomeusuario']) && !isset($session['sess_coddepartamento']) && !isset($session['sess_codcargo']) && !isset($session['sess_cargo']) && !isset($session['sess_setor']) && !isset($session['sess_unidade']) && !isset($session['sess_responsavelsetor'])) 
-        {
-           return $this->redirect('http://portalsenac.am.senac.br');
-        }
-
-    //VERIFICA SE O COLABORADOR FAZ PARTE DA EQUIPE DO GMT
-    if($session['sess_coddepartamento'] != 16){
-
-        $this->layout = 'main-acesso-negado';
-        return $this->render('/site/acesso_negado');
-
-    }else
-
-        $session = Yii::$app->session;
 
          $model = $this->findModel($id);
          $forum = new Forum();
 
-
-         $forum->transporte_id = $model->id;
-         $forum->usuario_id = $session['sess_codusuario'];
-         $forum->data = date('Y-m-d H:i');
-
-
         //CONVERSA ENTRE USUARIO E SUPORTE
         if ($forum->load(Yii::$app->request->post()) && $forum->save()) {
-
-
- 
-         //ENVIANDO EMAIL PARA O USUÁRIO INFORMANDO SOBRE UMA NOVA MENSAGEM....
-          $sql_email = "SELECT emus_email FROM `db_base`.emailusuario_emus WHERE emus_codusuario = '".$model->idusuario_solic."'";
-      
-      $email_solicitacao = Emailusuario::findBySql($sql_email)->all(); 
-      foreach ($email_solicitacao as $email)
-          {
-            $email_usuario  = $email["emus_email"];
-
-                            Yii::$app->mailer->compose()
-                            ->setFrom(['gmt.suporte@am.senac.br' => 'GMT - INFORMA'])
-                            ->setTo($email_usuario)
-                            ->setSubject('Nova Mensagem! - Solicitação de Transporte '.$model->id.'')
-                            ->setTextBody('Por favor, verique uma nova mensagem na solicitação de transporte de código: '.$model->id.' com status de '.$model->situacao->nome.' ')
-                            ->setHtmlBody('<p>Prezado(a), <span style="color:rgb(247, 148, 29)"><strong>'.$model->usuario_solic_nome.'</strong></span></p>
-
-                            <p>A solicita&ccedil;&atilde;o de transporte de c&oacute;digo <span style="color:rgb(247, 148, 29)"><strong>'.$model->id.'</strong></span> foi atualizada:</p>
-
-                            <p><strong>Mensagem</strong>: '.$forum->mensagem.'</p>
-
-                            <p><strong>Respons&aacute;vel pelo Atendimento</strong>: '.$model->usuario_suport_nome.'</p>
-
-                            <p>Por favor, n&atilde;o responda esse e-mail. Acesse http://portalsenac.am.senac.br</p>
-
-                            <p>Atenciosamente,&nbsp;</p>
-
-                            <p>Ger&ecirc;ncia de Manutenção e Transporte - GMT</p>')
-                            ->send();
-               } 
-
-
-            //MENSAGEM DE CONFIRMAÇÃO
-            Yii::$app->session->setFlash('success', '<strong>SUCESSO! </strong> A solicitação de Transporte de código <strong>' .$model->id. '</strong> foi ATUALIZADA!</strong>');
-
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('view', [
@@ -149,7 +91,7 @@ class TransporteAdminController extends Controller
     }
 
     /**
-     * Creates a new TransporteAdmin model.
+     * Creates a new TransporteAdminAcompanhamento model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
@@ -169,7 +111,7 @@ class TransporteAdminController extends Controller
 
     }else
 
-        $model = new TransporteAdmin();
+        $model = new TransporteAdminAcompanhamento();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -181,12 +123,12 @@ class TransporteAdminController extends Controller
     }
 
     /**
-     * Updates an existing TransporteAdmin model.
+     * Updates an existing TransporteAdminAcompanhamento model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+ public function actionUpdate($id)
     {
         $session = Yii::$app->session;
         if (!isset($session['sess_codusuario']) && !isset($session['sess_codcolaborador']) && !isset($session['sess_codunidade']) && !isset($session['sess_nomeusuario']) && !isset($session['sess_coddepartamento']) && !isset($session['sess_codcargo']) && !isset($session['sess_cargo']) && !isset($session['sess_setor']) && !isset($session['sess_unidade']) && !isset($session['sess_responsavelsetor'])) 
@@ -342,8 +284,9 @@ return $this->redirect(['index']);
     }
 
 
+
     /**
-     * Deletes an existing TransporteAdmin model.
+     * Deletes an existing TransporteAdminAcompanhamento model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -356,15 +299,15 @@ return $this->redirect(['index']);
     }
 
     /**
-     * Finds the TransporteAdmin model based on its primary key value.
+     * Finds the TransporteAdminAcompanhamento model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return TransporteAdmin the loaded model
+     * @return TransporteAdminAcompanhamento the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = TransporteAdmin::findOne($id)) !== null) {
+        if (($model = TransporteAdminAcompanhamento::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

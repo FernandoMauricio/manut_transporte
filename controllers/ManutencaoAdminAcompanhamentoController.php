@@ -4,17 +4,17 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Emailusuario;
-use app\models\Forum;
-use app\models\ManutencaoAdmin;
-use app\models\ManutencaoAdminSearch;
+use app\models\ManutencaoAdminAcompanhamento;
+use app\models\ManutencaoAdminAcompanhamentoSearch;
+USE app\models\Forum;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * ManutencaoAdminController implements the CRUD actions for ManutencaoAdmin model.
+ * ManutencaoAdminAcompanhamentoController implements the CRUD actions for ManutencaoAdminAcompanhamento model.
  */
-class ManutencaoAdminController extends Controller
+class ManutencaoAdminAcompanhamentoController extends Controller
 {
     /**
      * @inheritdoc
@@ -32,7 +32,7 @@ class ManutencaoAdminController extends Controller
     }
 
     /**
-     * Lists all ManutencaoAdmin models.
+     * Lists all ManutencaoAdminAcompanhamento models.
      * @return mixed
      */
     public function actionIndex()
@@ -51,7 +51,7 @@ class ManutencaoAdminController extends Controller
 
     }else
 
-        $searchModel = new ManutencaoAdminSearch();
+        $searchModel = new ManutencaoAdminAcompanhamentoSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -61,11 +61,11 @@ class ManutencaoAdminController extends Controller
     }
 
     /**
-     * Displays a single ManutencaoAdmin model.
+     * Displays a single ManutencaoAdminAcompanhamento model.
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+   public function actionView($id)
     {
         $session = Yii::$app->session;
         if (!isset($session['sess_codusuario']) && !isset($session['sess_codcolaborador']) && !isset($session['sess_codunidade']) && !isset($session['sess_nomeusuario']) && !isset($session['sess_coddepartamento']) && !isset($session['sess_codcargo']) && !isset($session['sess_cargo']) && !isset($session['sess_setor']) && !isset($session['sess_unidade']) && !isset($session['sess_responsavelsetor'])) 
@@ -137,8 +137,9 @@ $session = Yii::$app->session;
         }
 
     }
+
     /**
-     * Creates a new ManutencaoAdmin model.
+     * Creates a new ManutencaoAdminAcompanhamento model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
@@ -158,7 +159,7 @@ $session = Yii::$app->session;
 
     }else
 
-        $model = new ManutencaoAdmin();
+        $model = new ManutencaoAdminAcompanhamento();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -170,7 +171,7 @@ $session = Yii::$app->session;
     }
 
     /**
-     * Updates an existing ManutencaoAdmin model.
+     * Updates an existing ManutencaoAdminAcompanhamento model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -201,6 +202,7 @@ $session = Yii::$app->session;
             ]);
         }
     }
+
 
  public function actionAssumir($id)
     {
@@ -345,29 +347,44 @@ return $this->redirect(['index']);
 
         }
 
+
     /**
-     * Deletes an existing ManutencaoAdmin model.
+     * Deletes an existing ManutencaoAdminAcompanhamento model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
      */
     public function actionDelete($id)
     {
+        $session = Yii::$app->session;
+        if (!isset($session['sess_codusuario']) && !isset($session['sess_codcolaborador']) && !isset($session['sess_codunidade']) && !isset($session['sess_nomeusuario']) && !isset($session['sess_coddepartamento']) && !isset($session['sess_codcargo']) && !isset($session['sess_cargo']) && !isset($session['sess_setor']) && !isset($session['sess_unidade']) && !isset($session['sess_responsavelsetor'])) 
+        {
+           return $this->redirect('http://portalsenac.am.senac.br');
+        }
+
+    //VERIFICA SE O COLABORADOR FAZ PARTE DA EQUIPE DO GMT
+    if($session['sess_coddepartamento'] != 16){
+
+        $this->layout = 'main-acesso-negado';
+        return $this->render('/site/acesso_negado');
+
+    }else
+    
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the ManutencaoAdmin model based on its primary key value.
+     * Finds the ManutencaoAdminAcompanhamento model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return ManutencaoAdmin the loaded model
+     * @return ManutencaoAdminAcompanhamento the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = ManutencaoAdmin::findOne($id)) !== null) {
+        if (($model = ManutencaoAdminAcompanhamento::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

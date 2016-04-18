@@ -10,7 +10,7 @@ use app\models\TransporteAdmin;
 /**
  * TransporteAdminSearch represents the model behind the search form about `app\models\TransporteAdmin`.
  */
-class TransporteAdminSearch extends TransporteAdmin
+class TransporteAdminAcompanhamentoSearch extends TransporteAdminAcompanhamento
 {
     /**
      * @inheritdoc
@@ -19,7 +19,7 @@ class TransporteAdminSearch extends TransporteAdmin
     {
         return [
             [['id', 'tipo_solic_id', 'tipocarga_id', 'situacao_id', 'motorista_id', 'idusuario_solic', 'idusuario_suport'], 'integer'],
-            [['data_solicitacao', 'bairro_id','descricao_transporte', 'local', 'data_prevista', 'hora_prevista', 'data_confirmacao', 'hora_confirmacao', 'usuario_solic_nome', 'usuario_suport_nome', 'tipo_carga_label', 'motorista_label'], 'safe'],
+            [['data_solicitacao', 'bairro_id','descricao_transporte', 'local', 'data_prevista', 'hora_prevista', 'data_confirmacao', 'hora_confirmacao', 'usuario_solic_nome', 'usuario_suport_nome', 'tipo_carga_label', 'motorista_label','situacao_label'], 'safe'],
         ];
     }
 
@@ -62,10 +62,11 @@ class TransporteAdminSearch extends TransporteAdmin
         ];
 
 
-        // $dataProvider->sort->attributes['bairro_label'] = [
-        // 'asc' => ['bairro.descricao' => SORT_ASC],
-        // 'desc' => ['bairro.descricao' => SORT_DESC],
-        // ];
+        $dataProvider->sort->attributes['situacao_label'] = [
+        'asc' => ['situacao.nome' => SORT_ASC],
+        'desc' => ['situacao.nome' => SORT_DESC],
+        ];
+
 
         $this->load($params);
 
@@ -94,7 +95,7 @@ class TransporteAdminSearch extends TransporteAdmin
             'motorista_id' => $this->motorista_id,
             'idusuario_solic' => $this->idusuario_solic,
             'idusuario_suport' => $this->idusuario_suport,
-            'situacao_id' => 1, //SOLICITAÇÕES ENCAMINHADAS PARA PROVIDÊNCIAS
+            'situacao_id' => [2,3], //SOLICITAÇÕES Acompanhamento
         ]);
 
         $query->andFilterWhere(['like', 'descricao_transporte', $this->descricao_transporte])
@@ -102,6 +103,7 @@ class TransporteAdminSearch extends TransporteAdmin
             ->andFilterWhere(['=', 'tipo_carga.descricao', $this->tipo_carga_label])
             ->andFilterWhere(['=', 'motorista.descricao', $this->motorista_label])
             ->andFilterWhere(['like', 'bairro.descricao', $this->bairro_id])
+            ->andFilterWhere(['=', 'situacao.nome', $this->situacao_label])
             ->andFilterWhere(['like', 'usuario_solic_nome', $this->usuario_solic_nome])
             ->andFilterWhere(['like', 'usuario_suport_nome', $this->usuario_suport_nome]);
 

@@ -76,7 +76,7 @@ class ManutencaoController extends Controller
             $email_usuario  = $email["emus_email"];
 
                             Yii::$app->mailer->compose()
-                            ->setFrom(['gmt@am.senac.br' => 'GMT - INFORMA'])
+                            ->setFrom(['gmt.suporte@am.senac.br' => 'GMT - INFORMA'])
                             ->setTo($email_usuario)
                             ->setSubject('Nova Mensagem! - Solicitação de Transporte '.$model->id.'')
                             ->setTextBody('Por favor, verique uma nova mensagem na solicitação de transporte de código: '.$model->id.' com status de '.$model->situacao->nome.' ')
@@ -142,7 +142,7 @@ class ManutencaoController extends Controller
                     $email_usuario  = $email["emus_email"];
 
                                     Yii::$app->mailer->compose()
-                                    ->setFrom(['gmt@am.senac.br' => 'GMT - INFORMA'])
+                                    ->setFrom(['gmt.suporte@am.senac.br' => 'GMT - INFORMA'])
                                     ->setTo($email_usuario)
                                     ->setSubject('Solicitação de Transporte - ' . $model->id)
                                     ->setTextBody('Existe uma solicitação de '.$model->tipoSolic->descricao.' de código: '.$model->id.' - PENDENTE')
@@ -203,7 +203,7 @@ class ManutencaoController extends Controller
          //encerra a solicitação de manutenção
          $connection = Yii::$app->db;
          $command = $connection->createCommand(
-         "UPDATE `db_gmt`.`manutencao` SET `situacao_id` = '3' , `usuario_encerramento` = '".$model->usuario_encerramento."', `data_encerramento` = '".$model->data_encerramento."' WHERE `id` = '".$model->id."'");
+         "UPDATE `db_manut_transporte`.`manutencao` SET `situacao_id` = '3' , `usuario_encerramento` = '".$model->usuario_encerramento."', `data_encerramento` = '".$model->data_encerramento."' WHERE `id` = '".$model->id."'");
          $command->execute();
 
          $model->situacao_id = 3;
@@ -219,7 +219,7 @@ class ManutencaoController extends Controller
                 $email_usuario  = $email["emus_email"];
 
                                 Yii::$app->mailer->compose()
-                                ->setFrom(['gmt@am.senac.br' => 'GMT - INFORMA'])
+                                ->setFrom(['gmt.suporte@am.senac.br' => 'GMT - INFORMA'])
                                 ->setTo($email_usuario)
                                 ->setSubject('Solicitação de Manutenção '.$model->id.' - ' . $model->situacao->nome)
                                 ->setTextBody('A solicitação de manutenção de código: '.$model->id.' está com status de '.$model->situacao->nome.' ')
