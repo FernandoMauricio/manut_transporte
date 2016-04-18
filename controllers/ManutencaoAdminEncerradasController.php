@@ -36,6 +36,20 @@ class ManutencaoAdminEncerradasController extends Controller
      */
     public function actionIndex()
     {
+        $session = Yii::$app->session;
+        if (!isset($session['sess_codusuario']) && !isset($session['sess_codcolaborador']) && !isset($session['sess_codunidade']) && !isset($session['sess_nomeusuario']) && !isset($session['sess_coddepartamento']) && !isset($session['sess_codcargo']) && !isset($session['sess_cargo']) && !isset($session['sess_setor']) && !isset($session['sess_unidade']) && !isset($session['sess_responsavelsetor'])) 
+        {
+           return $this->redirect('http://portalsenac.am.senac.br');
+        }
+
+    //VERIFICA SE O COLABORADOR FAZ PARTE DA EQUIPE DO GMT
+    if($session['sess_coddepartamento'] != 16){
+
+        $this->layout = 'main-acesso-negado';
+        return $this->render('/site/acesso_negado');
+
+    }else
+
         $searchModel = new ManutencaoAdminEncerradasSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -52,6 +66,20 @@ class ManutencaoAdminEncerradasController extends Controller
      */
     public function actionView($id)
     {
+        $session = Yii::$app->session;
+        if (!isset($session['sess_codusuario']) && !isset($session['sess_codcolaborador']) && !isset($session['sess_codunidade']) && !isset($session['sess_nomeusuario']) && !isset($session['sess_coddepartamento']) && !isset($session['sess_codcargo']) && !isset($session['sess_cargo']) && !isset($session['sess_setor']) && !isset($session['sess_unidade']) && !isset($session['sess_responsavelsetor'])) 
+        {
+           return $this->redirect('http://portalsenac.am.senac.br');
+        }
+
+    //VERIFICA SE O COLABORADOR FAZ PARTE DA EQUIPE DO GMT
+    if($session['sess_coddepartamento'] != 16){
+
+        $this->layout = 'main-acesso-negado';
+        return $this->render('/site/acesso_negado');
+
+    }else
+
         $session = Yii::$app->session;
 
          $model = $this->findModel($id);
@@ -79,6 +107,20 @@ class ManutencaoAdminEncerradasController extends Controller
      */
     public function actionCreate()
     {
+        $session = Yii::$app->session;
+        if (!isset($session['sess_codusuario']) && !isset($session['sess_codcolaborador']) && !isset($session['sess_codunidade']) && !isset($session['sess_nomeusuario']) && !isset($session['sess_coddepartamento']) && !isset($session['sess_codcargo']) && !isset($session['sess_cargo']) && !isset($session['sess_setor']) && !isset($session['sess_unidade']) && !isset($session['sess_responsavelsetor'])) 
+        {
+           return $this->redirect('http://portalsenac.am.senac.br');
+        }
+
+    //VERIFICA SE O COLABORADOR FAZ PARTE DA EQUIPE DO GMT
+    if($session['sess_coddepartamento'] != 16){
+
+        $this->layout = 'main-acesso-negado';
+        return $this->render('/site/acesso_negado');
+
+    }else
+
         $model = new ManutencaoAdminEncerradas();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -98,6 +140,20 @@ class ManutencaoAdminEncerradasController extends Controller
      */
     public function actionUpdate($id)
     {
+        $session = Yii::$app->session;
+        if (!isset($session['sess_codusuario']) && !isset($session['sess_codcolaborador']) && !isset($session['sess_codunidade']) && !isset($session['sess_nomeusuario']) && !isset($session['sess_coddepartamento']) && !isset($session['sess_codcargo']) && !isset($session['sess_cargo']) && !isset($session['sess_setor']) && !isset($session['sess_unidade']) && !isset($session['sess_responsavelsetor'])) 
+        {
+           return $this->redirect('http://portalsenac.am.senac.br');
+        }
+
+    //VERIFICA SE O COLABORADOR FAZ PARTE DA EQUIPE DO GMT
+    if($session['sess_coddepartamento'] != 16){
+
+        $this->layout = 'main-acesso-negado';
+        return $this->render('/site/acesso_negado');
+
+    }else
+
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -117,6 +173,20 @@ class ManutencaoAdminEncerradasController extends Controller
      */
     public function actionDelete($id)
     {
+        $session = Yii::$app->session;
+        if (!isset($session['sess_codusuario']) && !isset($session['sess_codcolaborador']) && !isset($session['sess_codunidade']) && !isset($session['sess_nomeusuario']) && !isset($session['sess_coddepartamento']) && !isset($session['sess_codcargo']) && !isset($session['sess_cargo']) && !isset($session['sess_setor']) && !isset($session['sess_unidade']) && !isset($session['sess_responsavelsetor'])) 
+        {
+           return $this->redirect('http://portalsenac.am.senac.br');
+        }
+
+    //VERIFICA SE O COLABORADOR FAZ PARTE DA EQUIPE DO GMT
+    if($session['sess_coddepartamento'] != 16){
+
+        $this->layout = 'main-acesso-negado';
+        return $this->render('/site/acesso_negado');
+
+    }else
+    
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);

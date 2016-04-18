@@ -27,25 +27,21 @@ AppAsset::register($this);
 
 <div class="wrap">
     <?php
+    $session = Yii::$app->session;
     NavBar::begin([
-        'brandLabel' => 'My Company',
+        'brandLabel' => '<img src="css/img/logo_senac_topo.png"/>',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
+
+if($session['sess_codunidade'] == 12 && $session['sess_coddepartamento'] == 16 ){  //TEM QUE SER DO GMT E DO DEPARTAMENTO SEDE ADMINISTRATIVA - GMT
+
    echo NavX::widget([
                 'options' => ['class' => 'navbar-nav navbar-right'],
 
                 'items' => [
-
-                    ['label' => 'Solicitações',
-                'items' => [
-                 '<li class="dropdown-header">Novas Solicitações</li>',
-                 ['label' => 'Solicitação de Transporte', 'url' => ['transporte/index']],
-                 ['label' => 'Solicitação de Manutenção', 'url' => ['manutencao/index']],
-                           ],            
-                    ],
 
                     ['label' => 'Administração', 'items' => [
 
@@ -70,10 +66,41 @@ AppAsset::register($this);
                 ]],
             ]],
 
+                    ['label' => 'Solicitações',
+                'items' => [
+                 '<li class="dropdown-header">Novas Solicitações</li>',
+                 ['label' => 'Solicitação de Transporte', 'url' => ['transporte/index']],
+                 ['label' => 'Solicitação de Manutenção', 'url' => ['manutencao/index']],
+                           ],            
+                    ],
+
+
             ['label' => 'Sair', 'url' => 'http://portalsenac.am.senac.br/portal_senac/control_base_vermodulos/control_base_vermodulos.php'],
 
                 ],
             ]);
+   }else //OUTROS USUÁRIOS
+
+    echo NavX::widget([
+
+                'options' => ['class' => 'navbar-nav navbar-right'],
+
+                'items' => [
+
+                    ['label' => 'Solicitações',
+                'items' => [
+                 '<li class="dropdown-header">Novas Solicitações</li>',
+                 ['label' => 'Solicitação de Transporte', 'url' => ['transporte/index']],
+                 ['label' => 'Solicitação de Manutenção', 'url' => ['manutencao/index']],
+                           ],            
+                    ],
+
+
+            ['label' => 'Sair', 'url' => 'http://portalsenac.am.senac.br/portal_senac/control_base_vermodulos/control_base_vermodulos.php'],
+
+                ],
+            ]);
+
     NavBar::end();
     ?>
 

@@ -96,7 +96,11 @@ class TransporteSearch extends Transporte
             'idusuario_suport' => $this->idusuario_suport,
         ]);
 
-        $query->andFilterWhere(['like', 'descricao_transporte', $this->descricao_transporte])
+
+        $session = Yii::$app->session;
+
+        $query->andFilterWhere(['cod_unidade_solic' => $session['sess_codunidade']])
+            ->andFilterWhere(['like', 'descricao_transporte', $this->descricao_transporte])
             ->andFilterWhere(['like', 'local', $this->local])
             ->andFilterWhere(['like', 'usuario_solic_nome', $this->usuario_solic_nome])
             ->andFilterWhere(['=', 'motorista.descricao', $this->motorista_label])

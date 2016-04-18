@@ -77,7 +77,11 @@ class ManutencaoSearch extends Manutencao
             'tipo_solic_id' => $this->tipo_solic_id,
         ]);
 
-        $query->andFilterWhere(['like', 'titulo', $this->titulo])
+
+        $session = Yii::$app->session;
+
+        $query->andFilterWhere(['cod_unidade_solic' => $session['sess_codunidade']])
+            ->andFilterWhere(['like', 'titulo', $this->titulo])
             ->andFilterWhere(['like', 'descricao_manut', $this->descricao_manut])
             ->andFilterWhere(['like', 'usuario_solic_nome', $this->usuario_solic_nome])
             ->andFilterWhere(['=', 'situacao.nome', $this->situacao_label])
