@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Manutencao */
+/* @var $model app\models\ManutencaoAdminEncerradas */
 
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Manutenções', 'url' => ['index']];
@@ -16,7 +16,7 @@ echo '<div class="alert alert-'.$key.'">'.$message.'</div>';
 }
 
 ?>
-<div class="manutencao-view">
+<div class="manutencao-admin-encerradas-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -39,7 +39,7 @@ echo '<div class="alert alert-'.$key.'">'.$message.'</div>';
             'descricao_manut:ntext',
             'usuario_solic_nome',
             'usuario_suport_nome',
-            
+           
         ],
     ]) ?>
 
@@ -51,9 +51,5 @@ echo '<div class="alert alert-'.$key.'">'.$message.'</div>';
             'forum' => $forum,
         ]); ?>
         
-
-    <?= $this->render('/forum/create', [
-        'forum' => $forum,
-    ]) ?>
-
 </div>
+

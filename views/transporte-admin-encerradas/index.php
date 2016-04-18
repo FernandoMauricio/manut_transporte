@@ -120,6 +120,16 @@ $gridColumns = [
     echo GridView::widget([
     'dataProvider'=>$dataProvider,
     'filterModel'=>$searchModel,
+    'rowOptions' =>function($model){
+                    if($model->situacao_id == '3' ){
+
+                            return['class'=>'danger'];                        
+                    } if($model->situacao_id == '2' ){
+
+                            return['class'=>'info'];                        
+                    }
+
+        },
     'columns'=>$gridColumns,
     'containerOptions'=>['style'=>'overflow: auto'], // only set when $responsive = false
     'headerRowOptions'=>['class'=>'kartik-sheet-style'],
