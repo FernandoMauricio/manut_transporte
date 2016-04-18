@@ -55,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
      </div>
     </div>
 
-<?= $this->render('/forum/view', [
+<?= $this->render('/forum/view-transporte', [
             'forum' => $forum,
         ]); ?>
         

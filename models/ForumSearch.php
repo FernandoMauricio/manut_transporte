@@ -18,7 +18,7 @@ class ForumSearch extends Forum
     public function rules()
     {
         return [
-            [['id', 'usuario_id', 'solicitacao_id'], 'integer'],
+            [['id', 'usuario_id', 'transporte_id', 'manutencao_id'], 'integer'],
             [['mensagem', 'data'], 'safe'],
         ];
     }
@@ -62,7 +62,7 @@ class ForumSearch extends Forum
             'id' => $this->id,
             'data' => $this->data,
             'usuario_id' => $this->usuario_id,
-            'solicitacao_id' => $this->solicitacao_id,
+            'transporte_id' => $this->transporte_id,
         ]);
 
         $query->andFilterWhere(['like', 'mensagem', $this->mensagem]);

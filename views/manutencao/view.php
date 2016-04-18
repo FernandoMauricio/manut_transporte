@@ -4,10 +4,10 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Transporte */
+/* @var $model app\models\Manutencao */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Transportes', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Manutencaos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 //Pega as mensagens
@@ -16,13 +16,13 @@ echo '<div class="alert alert-'.$key.'">'.$message.'</div>';
 }
 
 ?>
-<div class="transporte-view">
+<div class="manutencao-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
 <div class="panel panel-primary">
   <div class="panel-heading">
-    <h3 class="panel-title">Detalhes - Solicitação de Transporte </h3>
+    <h3 class="panel-title">Detalhes - Solicitação de Manutenção </h3>
   </div>
   <div class="panel-body">
   <div class="row">
@@ -34,27 +34,11 @@ echo '<div class="alert alert-'.$key.'">'.$message.'</div>';
                 'attribute' => 'data_solicitacao',
                 'format'=>['datetime', 'php:d/m/Y'],
             ],
-            'descricao_transporte:ntext',
-            'local',
-            'bairro.descricao', //bairro_id
-            [
-                'attribute' => 'data_prevista',
-                'format'=>['datetime', 'php:d/m/Y'],
-            ],
-            'hora_prevista',
-            [
-                'attribute' => 'data_confirmacao',
-                'format'=>['datetime', 'php:d/m/Y'],
-            ],
-            'hora_confirmacao',
-            'tipoSolic.descricao', //tipo_solic_id
-            'tipoCarga.descricao', //tipocarga_id
-            'situacao.nome', //situacao_id
-            'motorista.descricao', //motorista_id
-            //'idusuario_solic',
+            'titulo',
+            'descricao_manut:ntext',
             'usuario_solic_nome',
-            //'idusuario_suport',
             'usuario_suport_nome',
+            'tipoSolic.descricao', //tipo_solic_id
         ],
     ]) ?>
 
@@ -62,7 +46,7 @@ echo '<div class="alert alert-'.$key.'">'.$message.'</div>';
      </div>
     </div>
 
-<?= $this->render('/forum/view-transporte', [
+<?= $this->render('/forum/view-manutencao', [
             'forum' => $forum,
         ]); ?>
         

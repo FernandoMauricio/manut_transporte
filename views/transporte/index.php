@@ -40,13 +40,12 @@ echo '<div class="alert alert-'.$key.'">'.$message.'</div>';
                     
                     'id',
 
-                    [
-                    'attribute'=>'usuario_solic_nome',
-                    'width' => '2500px',
-                    ],
+                    'usuario_solic_nome',
+                    
                     [
                         'attribute' => 'data_solicitacao',
                         'format' => ['date', 'php:d/m/Y'],
+                        'width' => '12%',
                         'hAlign' => 'center',
                         'filter'=> DatePicker::widget([
                         'model' => $searchModel, 
@@ -74,11 +73,8 @@ echo '<div class="alert alert-'.$key.'">'.$message.'</div>';
                         'format'=>'raw'
                     ],
 
-                    [
-                        'attribute' => 'local',
-                        'width' => '2500px',
-                       
-                    ],
+                    'local',
+
                     [
                         'attribute' => 'bairro_id',
                         'value' => 'bairro.descricao',
@@ -111,7 +107,29 @@ echo '<div class="alert alert-'.$key.'">'.$message.'</div>';
                         'format'=>'raw'
                     ],
 
-                    ['class' => 'yii\grid\ActionColumn' ,'template' => ' {view}'],
+                    ['class' => 'yii\grid\ActionColumn',
+            'template' => '{view} {encerrar}',
+            'buttons' => [
+
+            //VISUALIZAR SOLICITAÇÃO DE TRANSPORTE
+            'view' => function ($url, $model) {
+                return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
+                                'title' => Yii::t('app', 'Visualizar'),
+                                   ]);
+            },
+
+            //ENCERRAR SOLICITAÇÃO DE TRANSPORTE
+            'encerrar' => function ($url, $model) {
+                return Html::a('<span class="glyphicon glyphicon-floppy-save"></span>', $url, [
+                            'title' => Yii::t('app', 'Encerrar Solicitação'),
+                            'data' => [
+                                            'confirm' => 'Você tem CERTEZA que deseja ENCERRAR a solicitação?',
+                                            'method' => 'post',
+                                        ],
+                ]);
+            },
+        ],
+      ],
                 ];
 
          ?>

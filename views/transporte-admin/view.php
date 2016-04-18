@@ -35,7 +35,10 @@ echo '<div class="alert alert-'.$key.'">'.$message.'</div>';
         'model' => $model,
         'attributes' => [
             'id',
-            'data_solicitacao',
+            [
+                'attribute' => 'data_solicitacao',
+                'format'=>['datetime', 'php:d/m/Y'],
+            ],
             'descricao_transporte:ntext',
             'local',
             'bairro.descricao', //bairro_id
@@ -68,7 +71,7 @@ echo '<div class="alert alert-'.$key.'">'.$message.'</div>';
      </div>
     </div>
 
-<?= $this->render('/forum/view', [
+<?= $this->render('/forum/view-transporte', [
             'forum' => $forum,
         ]); ?>
         

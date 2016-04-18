@@ -3,21 +3,18 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Bairro;
-use app\models\Forum;
-use app\models\Motorista;
 use app\models\Emailusuario;
-use app\models\Transporte;
-use app\models\TransporteSearch;
-use app\models\TipoCarga;
+use app\models\Forum;
+use app\models\Manutencao;
+use app\models\ManutencaoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * TransporteController implements the CRUD actions for Transporte model.
+ * ManutencaoController implements the CRUD actions for Manutencao model.
  */
-class TransporteController extends Controller
+class ManutencaoController extends Controller
 {
     /**
      * @inheritdoc
@@ -35,12 +32,12 @@ class TransporteController extends Controller
     }
 
     /**
-     * Lists all Transporte models.
+     * Lists all Manutencao models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new TransporteSearch();
+        $searchModel = new ManutencaoSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -50,22 +47,22 @@ class TransporteController extends Controller
     }
 
     /**
-     * Displays a single Transporte model.
+     * Displays a single Manutencao model.
      * @param integer $id
      * @return mixed
      */
     public function actionView($id)
     {
+
         $session = Yii::$app->session;
 
          $model = $this->findModel($id);
          $forum = new Forum();
 
 
-         $forum->transporte_id = $model->id;
+         $forum->manutencao_id = $model->id;
          $forum->usuario_id = $session['sess_codusuario'];
          $forum->data = date('Y-m-d H:i');
-
 
         //CONVERSA ENTRE USUARIO E SUPORTE
         if ($forum->load(Yii::$app->request->post()) && $forum->save()) {
@@ -114,8 +111,9 @@ class TransporteController extends Controller
 
     }
 
+
     /**
-     * Creates a new Transporte model.
+     * Creates a new Manutencao model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
@@ -123,22 +121,18 @@ class TransporteController extends Controller
     {
         $session = Yii::$app->session;
 
-        $model = new Transporte();
-
-        //Localização dos bairros, motoristas e tipo de carga
-        $bairros = Bairro::find()->all();
-        $tipoCarga = TipoCarga::find()->all();
+        $model = new Manutencao();
 
         //Encaminhado para providências
-        $model->tipo_solic_id = 1; // Solicitação de Transporte
+        $model->tipo_solic_id = 2; // Solicitação de Manutenção
         $model->idusuario_solic = $session['sess_codusuario'];
         $model->usuario_solic_nome = $session['sess_nomeusuario'];
         $model->cod_unidade_solic = $session['sess_codunidade'];
         $model->data_solicitacao = date('Y-m-d');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-
-        //ENVIANDO EMAIL PARA OS RESPONSÁVEIS DO GMT INFORMANDO SOBRE O RECEBIMENTO DE UMA NOVA SOLICITAÇÃO DE TRANSPORTE 
+           
+        //ENVIANDO EMAIL PARA OS RESPONSÁVEIS DO GMT INFORMANDO SOBRE O RECEBIMENTO DE UMA NOVA SOLICITAÇÃO DE MANUTENÇÃO 
         //-- 12 - GERENCIA DE MANUTENÇÃO E TRANSPORTE // 16 - SEDE ADMINISTRATIVA GMT
                   $sql_email = "SELECT DISTINCT emus_email FROM emailusuario_emus,colaborador_col,responsavelambiente_ream,responsaveldepartamento_rede WHERE ream_codunidade = '12' AND rede_coddepartamento = '16' AND rede_codcolaborador = col_codcolaborador AND col_codusuario = emus_codusuario";
               
@@ -151,12 +145,12 @@ class TransporteController extends Controller
                                     ->setFrom(['gmt@am.senac.br' => 'GMT - INFORMA'])
                                     ->setTo($email_usuario)
                                     ->setSubject('Solicitação de Transporte - ' . $model->id)
-                                    ->setTextBody('Existe uma solicitação de Transporte de código: '.$model->id.' - PENDENTE')
+                                    ->setTextBody('Existe uma solicitação de '.$model->tipoSolic->descricao.' de código: '.$model->id.' - PENDENTE')
                                     ->setHtmlBody('<p>Prezado(a) Senhor(a),</p>
 
-                                    <p>Existe uma solicita&ccedil;&atilde;o de transporte de c&oacute;digo: <strong><span style="color:#F7941D">'.$model->id.' </span></strong>- <strong><span style="color:#F7941D">PENDENTE</span></strong></p>
+                                    <p>Existe uma solicita&ccedil;&atilde;o de '.$model->tipoSolic->descricao.' de c&oacute;digo: <strong><span style="color:#F7941D">'.$model->id.' </span></strong>- <strong><span style="color:#F7941D">PENDENTE</span></strong></p>
 
-                                    <p>Por favor, n&atilde;o responda esse e-mail. Acesse http://portalsenac.am.senac.br para ANALISAR a solicita&ccedil;&atilde;o de transporte.</p>
+                                    <p>Por favor, n&atilde;o responda esse e-mail. Acesse http://portalsenac.am.senac.br para ANALISAR a solicita&ccedil;&atilde;o de  '.$model->tipoSolic->descricao.'.</p>
 
                                     <p>Atenciosamente,</p>
 
@@ -167,20 +161,18 @@ class TransporteController extends Controller
 
 
             //MENSAGEM DE CONFIRMAÇÃO
-            Yii::$app->session->setFlash('success', '<strong>SUCESSO! </strong> Solicitação de Transporte <strong> CRIADA!</strong>');
+            Yii::$app->session->setFlash('success', '<strong>SUCESSO! </strong> Solicitação de '.$model->tipoSolic->descricao.' <strong> criada!</strong>');
 
             return $this->redirect(['index']);
         } else {
             return $this->render('create', [
                 'model' => $model,
-                'bairros'=> $bairros,
-                'tipoCarga'=>$tipoCarga,
             ]);
         }
     }
 
     /**
-     * Updates an existing Transporte model.
+     * Updates an existing Manutencao model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -199,7 +191,7 @@ class TransporteController extends Controller
     }
 
 
-     public function actionEncerrar($id)
+ public function actionEncerrar($id)
     {
      $session = Yii::$app->session;
 
@@ -208,10 +200,10 @@ class TransporteController extends Controller
      $model->usuario_encerramento = $session['sess_nomeusuario'];
      $model->data_encerramento = date('Y-m-d H:i:s');
 
-     //encerra a solicitação de transporte
+     //encerra a solicitação de manutenção
      $connection = Yii::$app->db;
      $command = $connection->createCommand(
-     "UPDATE `db_gmt`.`transporte` SET `situacao_id` = '3' , `usuario_encerramento` = '".$model->usuario_encerramento."', `data_encerramento` = '".$model->data_encerramento."' WHERE `id` = '".$model->id."'");
+     "UPDATE `db_gmt`.`manutencao` SET `situacao_id` = '3' , `usuario_encerramento` = '".$model->usuario_encerramento."', `data_encerramento` = '".$model->data_encerramento."' WHERE `id` = '".$model->id."'");
      $command->execute();
 
      $model->situacao_id = 3;
@@ -229,11 +221,11 @@ class TransporteController extends Controller
                             Yii::$app->mailer->compose()
                             ->setFrom(['gmt@am.senac.br' => 'GMT - INFORMA'])
                             ->setTo($email_usuario)
-                            ->setSubject('Solicitação de Transporte '.$model->id.' - ' . $model->situacao->nome)
-                            ->setTextBody('A solicitação de transporte de código: '.$model->id.' está com status de '.$model->situacao->nome.' ')
+                            ->setSubject('Solicitação de Manutenção '.$model->id.' - ' . $model->situacao->nome)
+                            ->setTextBody('A solicitação de manutenção de código: '.$model->id.' está com status de '.$model->situacao->nome.' ')
                             ->setHtmlBody('<p>Prezado(a), <span style="color:rgb(247, 148, 29)"><strong>'.$model->usuario_suport_nome.'</strong></span></p>
 
-                            <p>A solicita&ccedil;&atilde;o de transporte de c&oacute;digo <span style="color:rgb(247, 148, 29)"><strong>'.$model->id.'</strong></span> foi atualizada:</p>
+                            <p>A solicita&ccedil;&atilde;o de manutenção de c&oacute;digo <span style="color:rgb(247, 148, 29)"><strong>'.$model->id.'</strong></span> foi atualizada:</p>
 
                             <p><strong>Respons&aacute;vel pelo Encerramento</strong>: '.$model->usuario_encerramento.'</p>
 
@@ -243,22 +235,21 @@ class TransporteController extends Controller
 
                             <p>Atenciosamente,&nbsp;</p>
 
-                            <p>Ger&ecirc;ncia de Manutenção e Transporte - GMT</p>')
+                            <p>Ger&ecirc;ncia de Manutenção e Manutenção - GMT</p>')
                             ->send();
                         } 
 
         }
 
             //MENSAGEM DE CONFIRMAÇÃO
-            Yii::$app->session->setFlash('success', '<strong>SUCESSO! </strong> Solicitação de Transporte foi <strong> FINALIZADA!</strong>');
+            Yii::$app->session->setFlash('success', '<strong>SUCESSO! </strong> Solicitação de Manutenção foi <strong> FINALIZADA!</strong>');
 
 return $this->redirect(['index']);
 
     }
 
-
     /**
-     * Deletes an existing Transporte model.
+     * Deletes an existing Manutencao model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -271,15 +262,15 @@ return $this->redirect(['index']);
     }
 
     /**
-     * Finds the Transporte model based on its primary key value.
+     * Finds the Manutencao model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Transporte the loaded model
+     * @return Manutencao the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Transporte::findOne($id)) !== null) {
+        if (($model = Manutencao::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

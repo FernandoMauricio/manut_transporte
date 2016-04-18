@@ -11,7 +11,7 @@ use Yii;
  * @property string $mensagem
  * @property string $data
  * @property integer $usuario_id
- * @property integer $solicitacao_id
+ * @property integer $transporte_id
  *
  * @property Transporte $solicitacao
  */
@@ -31,11 +31,11 @@ class Forum extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['mensagem', 'data', 'usuario_id', 'solicitacao_id'], 'required'],
+            [['mensagem', 'data', 'usuario_id'], 'required'],
             [['mensagem'], 'string'],
-            [['data'], 'safe'],
-            [['usuario_id', 'solicitacao_id'], 'integer'],
-            [['solicitacao_id'], 'exist', 'skipOnError' => true, 'targetClass' => Transporte::className(), 'targetAttribute' => ['solicitacao_id' => 'id']],
+            [['data', 'transporte_id', 'manutencao_id'], 'safe'],
+            [['usuario_id', 'transporte_id'], 'integer'],
+            [['transporte_id'], 'exist', 'skipOnError' => true, 'targetClass' => Transporte::className(), 'targetAttribute' => ['transporte_id' => 'id']],
         ];
     }
 
@@ -49,7 +49,7 @@ class Forum extends \yii\db\ActiveRecord
             'mensagem' => 'Mensagem',
             'data' => 'Data',
             'usuario_id' => 'Usuario ID',
-            'solicitacao_id' => 'Solicitacao ID',
+            'transporte_id' => 'Solicitacao ID',
         ];
     }
 
@@ -58,6 +58,14 @@ class Forum extends \yii\db\ActiveRecord
      */
     public function getSolicitacao()
     {
-        return $this->hasOne(Transporte::className(), ['id' => 'solicitacao_id']);
+        return $this->hasOne(Transporte::className(), ['id' => 'transporte_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSolicitacao2()
+    {
+        return $this->hasOne(Manutencao::className(), ['id' => 'manutencao_id']);
     }
 }

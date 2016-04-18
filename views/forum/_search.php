@@ -23,7 +23,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($forum, 'usuario_id') ?>
 
-    <?= $form->field($forum, 'solicitacao_id') ?>
+    <?= $form->field($forum, 'transporte_id') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

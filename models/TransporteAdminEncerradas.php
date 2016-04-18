@@ -109,7 +109,7 @@ class TransporteAdminEncerradas extends \yii\db\ActiveRecord
      */
     public function getForums()
     {
-        return $this->hasMany(Forum::className(), ['solicitacao_id' => 'id']);
+        return $this->hasMany(Forum::className(), ['transporte_id' => 'id']);
     }
 
     /**

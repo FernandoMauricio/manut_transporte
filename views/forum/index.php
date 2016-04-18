@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'mensagem:ntext',
             'data',
             'usuario_id',
-            'solicitacao_id',
+            'transporte_id',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

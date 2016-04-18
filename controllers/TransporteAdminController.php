@@ -64,7 +64,7 @@ class TransporteAdminController extends Controller
          $forum = new Forum();
 
 
-         $forum->solicitacao_id = $model->id;
+         $forum->transporte_id = $model->id;
          $forum->usuario_id = $session['sess_codusuario'];
          $forum->data = date('Y-m-d H:i');
 
