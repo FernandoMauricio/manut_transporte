@@ -4,10 +4,10 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Manutencao */
+/* @var $model app\models\ManutencaoAdmin */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Manutencaos', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Manutenções', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 //Pega as mensagens
@@ -15,8 +15,9 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
 echo '<div class="alert alert-'.$key.'">'.$message.'</div>';
 }
 
+
 ?>
-<div class="manutencao-view">
+<div class="manutencao-admin-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -39,7 +40,7 @@ echo '<div class="alert alert-'.$key.'">'.$message.'</div>';
             'descricao_manut:ntext',
             'usuario_solic_nome',
             'usuario_suport_nome',
-            
+           
         ],
     ]) ?>
 
@@ -57,3 +58,4 @@ echo '<div class="alert alert-'.$key.'">'.$message.'</div>';
     ]) ?>
 
 </div>
+

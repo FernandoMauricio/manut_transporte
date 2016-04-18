@@ -5,16 +5,16 @@ namespace app\controllers;
 use Yii;
 use app\models\Emailusuario;
 use app\models\Forum;
-use app\models\Manutencao;
-use app\models\ManutencaoSearch;
+use app\models\ManutencaoAdmin;
+use app\models\ManutencaoAdminSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * ManutencaoController implements the CRUD actions for Manutencao model.
+ * ManutencaoAdminController implements the CRUD actions for ManutencaoAdmin model.
  */
-class ManutencaoController extends Controller
+class ManutencaoAdminController extends Controller
 {
     /**
      * @inheritdoc
@@ -32,12 +32,12 @@ class ManutencaoController extends Controller
     }
 
     /**
-     * Lists all Manutencao models.
+     * Lists all ManutencaoAdmin models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new ManutencaoSearch();
+        $searchModel = new ManutencaoAdminSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -47,14 +47,13 @@ class ManutencaoController extends Controller
     }
 
     /**
-     * Displays a single Manutencao model.
+     * Displays a single ManutencaoAdmin model.
      * @param integer $id
      * @return mixed
      */
     public function actionView($id)
     {
-
-        $session = Yii::$app->session;
+$session = Yii::$app->session;
 
          $model = $this->findModel($id);
          $forum = new Forum();
@@ -68,7 +67,7 @@ class ManutencaoController extends Controller
         if ($forum->load(Yii::$app->request->post()) && $forum->save()) {
 
          //ENVIANDO EMAIL PARA O USUÁRIO INFORMANDO SOBRE UMA NOVA MENSAGEM....
-          $sql_email = "SELECT emus_email FROM `db_base`.emailusuario_emus WHERE emus_codusuario = '".$model->idusuario_suport."'";
+          $sql_email = "SELECT emus_email FROM `db_base`.emailusuario_emus WHERE emus_codusuario = '".$model->idusuario_solic."'";
       
       $email_solicitacao = Emailusuario::findBySql($sql_email)->all(); 
       foreach ($email_solicitacao as $email)
@@ -78,9 +77,9 @@ class ManutencaoController extends Controller
                             Yii::$app->mailer->compose()
                             ->setFrom(['gmt@am.senac.br' => 'GMT - INFORMA'])
                             ->setTo($email_usuario)
-                            ->setSubject('Nova Mensagem! - Solicitação de Transporte '.$model->id.'')
+                            ->setSubject('Nova Mensagem! - Solicitação de Manutenção '.$model->id.'')
                             ->setTextBody('Por favor, verique uma nova mensagem na solicitação de transporte de código: '.$model->id.' com status de '.$model->situacao->nome.' ')
-                            ->setHtmlBody('<p>Prezado(a), <span style="color:rgb(247, 148, 29)"><strong>'.$model->usuario_suport_nome.'</strong></span></p>
+                            ->setHtmlBody('<p>Prezado(a), <span style="color:rgb(247, 148, 29)"><strong>'.$model->usuario_solic_nome.'</strong></span></p>
 
                             <p>A solicita&ccedil;&atilde;o de transporte de c&oacute;digo <span style="color:rgb(247, 148, 29)"><strong>'.$model->id.'</strong></span> foi atualizada:</p>
 
@@ -96,7 +95,7 @@ class ManutencaoController extends Controller
 
 
             //MENSAGEM DE CONFIRMAÇÃO
-            Yii::$app->session->setFlash('success', '<strong>SUCESSO! </strong> A solicitação de Transporte de código <strong>' .$model->id. '</strong> foi ATUALIZADA!</strong>');
+            Yii::$app->session->setFlash('success', '<strong>SUCESSO! </strong> A solicitação de Manutenção de código <strong>' .$model->id. '</strong> foi ATUALIZADA!</strong>');
 
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -110,60 +109,17 @@ class ManutencaoController extends Controller
         }
 
     }
-
-
     /**
-     * Creates a new Manutencao model.
+     * Creates a new ManutencaoAdmin model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $session = Yii::$app->session;
-
-        $model = new Manutencao();
-
-        //Encaminhado para providências
-        $model->tipo_solic_id = 2; // Solicitação de Manutenção
-        $model->idusuario_solic = $session['sess_codusuario'];
-        $model->usuario_solic_nome = $session['sess_nomeusuario'];
-        $model->cod_unidade_solic = $session['sess_codunidade'];
-        $model->data_solicitacao = date('Y-m-d');
+        $model = new ManutencaoAdmin();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-           
-        //ENVIANDO EMAIL PARA OS RESPONSÁVEIS DO GMT INFORMANDO SOBRE O RECEBIMENTO DE UMA NOVA SOLICITAÇÃO DE MANUTENÇÃO 
-        //-- 12 - GERENCIA DE MANUTENÇÃO E TRANSPORTE // 16 - SEDE ADMINISTRATIVA GMT
-                  $sql_email = "SELECT DISTINCT emus_email FROM emailusuario_emus,colaborador_col,responsavelambiente_ream,responsaveldepartamento_rede WHERE ream_codunidade = '12' AND rede_coddepartamento = '16' AND rede_codcolaborador = col_codcolaborador AND col_codusuario = emus_codusuario";
-              
-              $email_solicitacao = Emailusuario::findBySql($sql_email)->all(); 
-              foreach ($email_solicitacao as $email)
-                  {
-                    $email_usuario  = $email["emus_email"];
-
-                                    Yii::$app->mailer->compose()
-                                    ->setFrom(['gmt@am.senac.br' => 'GMT - INFORMA'])
-                                    ->setTo($email_usuario)
-                                    ->setSubject('Solicitação de Transporte - ' . $model->id)
-                                    ->setTextBody('Existe uma solicitação de '.$model->tipoSolic->descricao.' de código: '.$model->id.' - PENDENTE')
-                                    ->setHtmlBody('<p>Prezado(a) Senhor(a),</p>
-
-                                    <p>Existe uma solicita&ccedil;&atilde;o de '.$model->tipoSolic->descricao.' de c&oacute;digo: <strong><span style="color:#F7941D">'.$model->id.' </span></strong>- <strong><span style="color:#F7941D">PENDENTE</span></strong></p>
-
-                                    <p>Por favor, n&atilde;o responda esse e-mail. Acesse http://portalsenac.am.senac.br para ANALISAR a solicita&ccedil;&atilde;o de  '.$model->tipoSolic->descricao.'.</p>
-
-                                    <p>Atenciosamente,</p>
-
-                                    <p>Ger&ecirc;ncia de Manuten&ccedil;&atilde;o e Transporte -&nbsp;GMT</p>
-                                    ')
-                                    ->send();
-                                } 
-
-
-            //MENSAGEM DE CONFIRMAÇÃO
-            Yii::$app->session->setFlash('success', '<strong>SUCESSO! </strong> Solicitação de '.$model->tipoSolic->descricao.' <strong> criada!</strong>');
-
-            return $this->redirect(['index']);
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -172,7 +128,7 @@ class ManutencaoController extends Controller
     }
 
     /**
-     * Updates an existing Manutencao model.
+     * Updates an existing ManutencaoAdmin model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -188,6 +144,63 @@ class ManutencaoController extends Controller
                 'model' => $model,
             ]);
         }
+    }
+
+ public function actionAssumir($id)
+    {
+     $session = Yii::$app->session;
+
+     $model = $this->findModel($id);
+
+        //Atualiza a Solicitação para Agendado e inclui o usuário que está realizando o agendamento
+        $model->idusuario_suport = $session['sess_codusuario'];
+        $model->usuario_suport_nome = $session['sess_nomeusuario'];
+        $model->cod_unidade_suport = $session['sess_codunidade'];
+
+     //Atualiza a solicitação de manutenção
+     $connection = Yii::$app->db;
+     $command = $connection->createCommand(
+     "UPDATE `db_gmt`.`manutencao` SET `situacao_id` = '2' , `idusuario_suport` = '".$model->idusuario_suport."', `usuario_suport_nome` = '".$model->usuario_suport_nome."', `cod_unidade_suport` = '".$model->cod_unidade_suport."'  WHERE `id` = '".$model->id."'");
+     $command->execute();
+
+     $model->situacao_id = 2;
+     if($model->situacao_id == 2){
+
+         //ENVIANDO EMAIL PARA O USUÁRIO INFORMANDO SOBRE A SOLICITAÇÃO QUE FOI ENCERRADA
+        //-- 12 - GERENCIA DE MANUTENÇÃO E TRANSPORTE // 16 - SEDE ADMINISTRATIVA GMT
+          $sql_email = "SELECT emus_email FROM `db_base`.emailusuario_emus WHERE emus_codusuario = '".$model->idusuario_solic."'";
+      
+      $email_solicitacao = Emailusuario::findBySql($sql_email)->all(); 
+      foreach ($email_solicitacao as $email)
+          {
+            $email_usuario  = $email["emus_email"];
+
+                            Yii::$app->mailer->compose()
+                            ->setFrom(['gmt@am.senac.br' => 'GMT - INFORMA'])
+                            ->setTo($email_usuario)
+                            ->setSubject('Solicitação de Manutenção '.$model->id.' - ' . $model->situacao->nome)
+                            ->setTextBody('A solicitação de manutenção de código: '.$model->id.' está com status de '.$model->situacao->nome.' ')
+                            ->setHtmlBody('<p>Prezado(a), <span style="color:rgb(247, 148, 29)"><strong>'.$model->usuario_solic_nome.'</strong></span></p>
+
+                            <p>A solicita&ccedil;&atilde;o de manutenção de c&oacute;digo <span style="color:rgb(247, 148, 29)"><strong>'.$model->id.'</strong></span> foi atualizada:</p>
+
+                            <p><strong>Respons&aacute;vel pelo Atendimento</strong>: '.$model->usuario_suport_nome.'</p>
+
+                            <p>Por favor, n&atilde;o responda esse e-mail. Acesse http://portalsenac.am.senac.br</p>
+
+                            <p>Atenciosamente,&nbsp;</p>
+
+                            <p>Ger&ecirc;ncia de Manutenção e Manutenção - GMT</p>')
+                            ->send();
+                        } 
+
+        }
+
+            //MENSAGEM DE CONFIRMAÇÃO
+            Yii::$app->session->setFlash('success', '<strong>SUCESSO! </strong> Solicitação de Manutenção foi <strong> ATUALIZADA!</strong>');
+
+return $this->redirect(['index']);
+
     }
 
 
@@ -211,7 +224,7 @@ class ManutencaoController extends Controller
 
              //ENVIANDO EMAIL PARA O USUÁRIO INFORMANDO SOBRE A SOLICITAÇÃO QUE FOI ENCERRADA
             //-- 12 - GERENCIA DE MANUTENÇÃO E TRANSPORTE // 16 - SEDE ADMINISTRATIVA GMT
-              $sql_email = "SELECT emus_email FROM `db_base`.emailusuario_emus WHERE emus_codusuario = '".$model->idusuario_suport."'";
+              $sql_email = "SELECT emus_email FROM `db_base`.emailusuario_emus WHERE emus_codusuario = '".$model->idusuario_solic."'";
           
           $email_solicitacao = Emailusuario::findBySql($sql_email)->all(); 
           foreach ($email_solicitacao as $email)
@@ -223,7 +236,7 @@ class ManutencaoController extends Controller
                                 ->setTo($email_usuario)
                                 ->setSubject('Solicitação de Manutenção '.$model->id.' - ' . $model->situacao->nome)
                                 ->setTextBody('A solicitação de manutenção de código: '.$model->id.' está com status de '.$model->situacao->nome.' ')
-                                ->setHtmlBody('<p>Prezado(a), <span style="color:rgb(247, 148, 29)"><strong>'.$model->usuario_suport_nome.'</strong></span></p>
+                                ->setHtmlBody('<p>Prezado(a), <span style="color:rgb(247, 148, 29)"><strong>'.$model->usuario_solic_nome.'</strong></span></p>
 
                                 <p>A solicita&ccedil;&atilde;o de manutenção de c&oacute;digo <span style="color:rgb(247, 148, 29)"><strong>'.$model->id.'</strong></span> foi atualizada:</p>
 
@@ -249,7 +262,7 @@ class ManutencaoController extends Controller
         }
 
     /**
-     * Deletes an existing Manutencao model.
+     * Deletes an existing ManutencaoAdmin model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -262,15 +275,15 @@ class ManutencaoController extends Controller
     }
 
     /**
-     * Finds the Manutencao model based on its primary key value.
+     * Finds the ManutencaoAdmin model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Manutencao the loaded model
+     * @return ManutencaoAdmin the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Manutencao::findOne($id)) !== null) {
+        if (($model = ManutencaoAdmin::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
