@@ -41,8 +41,7 @@ class TransporteSearch extends Transporte
      */
     public function search($params)
     {
-        $query = Transporte::find()
-        ->orderBy(['id' => SORT_DESC]);
+        $query = Transporte::find()->orderBy(['id' => SORT_DESC]);
 
         // add conditions that should always apply here
 

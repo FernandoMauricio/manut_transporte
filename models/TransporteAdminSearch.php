@@ -41,8 +41,7 @@ class TransporteAdminSearch extends TransporteAdmin
      */
     public function search($params)
     {
-        $query = TransporteAdmin::find()
-        ->orderBy(['id' => SORT_DESC]);
+        $query = TransporteAdmin::find();
 
         // add conditions that should always apply here
 
