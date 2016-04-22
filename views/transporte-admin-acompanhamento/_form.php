@@ -27,7 +27,7 @@ use kartik\builder\Form;
 
   </div>
 
-  <div class="col-md-2">
+  <div class="col-md-3">
 
   <?= $form->field($model, 'tipo_carga_label')->textInput(['value'=> $model->tipoCarga->descricao,'readonly'=>true]) ?>
 
@@ -35,35 +35,17 @@ use kartik\builder\Form;
   </div>
 
 
-  <div class="col-md-2">
+  <div class="col-md-3">
 
   <?= $form->field($model, 'bairro_label')->textInput(['value'=> $model->bairro->descricao,'readonly'=>true]) ?>
 
   </div>
 
 
-  <div class="col-md-3">
+  <div class="col-md-4">
 
   <?= $form->field($model, 'situacao_label')->textInput(['value'=> $model->situacao->nome,'readonly'=>true]) ?>
 
-  </div>
-
-
-  <div class="col-md-3">
-
-    <?php
-            echo $form->field($model, 'data_solicitacao')->widget(DateControl::classname(), [
-            'type'=>DateControl::FORMAT_DATE,
-            'ajaxConversion'=>true,
-            'disabled' => true,
-            'options' => [
-                'pluginOptions' => [
-                    'autoclose' => true
-                ]
-            ]
-        ]);
-
-    ?>
   </div>
 
 </div>
@@ -133,6 +115,7 @@ use kartik\builder\Form;
                 'autoclose' => true,
                 'showSeconds' => false,
                 'showMeridian' => false,
+                'defaultTime' => false,
             ]
         ]);
     ?>

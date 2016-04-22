@@ -1,4 +1,8 @@
 <?php
+header("Location: /index.php?r=transporte%2Findex");
+?>
+
+<?php
 
 /* @var $this yii\web\View */
 

@@ -27,7 +27,7 @@ use kartik\builder\Form;
 
   </div>
 
-  <div class="col-md-3">
+  <div class="col-md-4">
 
         <?php
                     $data_tipocarga = ArrayHelper::map($tipoCarga, 'idtipo_carga', 'descricao');
@@ -44,7 +44,7 @@ use kartik\builder\Form;
   </div>
 
 
-  <div class="col-md-4">
+  <div class="col-md-5">
 
         <?php
                     $data_bairros = ArrayHelper::map($bairros, 'idbairro', 'descricao');
@@ -60,22 +60,6 @@ use kartik\builder\Form;
   </div>
 
 
-  <div class="col-md-3">
-
-    <?php
-            echo $form->field($model, 'data_solicitacao')->widget(DateControl::classname(), [
-            'type'=>DateControl::FORMAT_DATE,
-            'ajaxConversion'=>true,
-            'disabled' => true,
-            'options' => [
-                'pluginOptions' => [
-                    'autoclose' => true
-                ]
-            ]
-        ]);
-
-    ?>
-  </div>
 
 </div>
 
@@ -111,6 +95,7 @@ use kartik\builder\Form;
                 'autoclose' => true,
                 'showSeconds' => false,
                 'showMeridian' => false,
+                'defaultTime' => false,
             ]
         ]);
     ?>

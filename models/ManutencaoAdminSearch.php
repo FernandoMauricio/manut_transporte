@@ -57,6 +57,8 @@ class ManutencaoAdminSearch extends ManutencaoAdmin
         ];
 
 
+        $query->joinWith('situacao');
+
         $this->load($params);
 
         if (!$this->validate()) {

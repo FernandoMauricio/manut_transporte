@@ -16,6 +16,13 @@ use yii\widgets\Pjax;
 
 $this->title = 'Solicitações de Transporte Encerradas ';
 $this->params['breadcrumbs'][] = $this->title;
+
+//Pega as mensagens
+foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
+echo '<div class="alert alert-'.$key.'">'.$message.'</div>';
+}
+
+
 ?>
 <div class="transporte-admin-encerradas-index">
 

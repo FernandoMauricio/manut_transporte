@@ -41,7 +41,8 @@ class TransporteAdminAcompanhamentoSearch extends TransporteAdminAcompanhamento
      */
     public function search($params)
     {
-        $query = TransporteAdmin::find()->orderBy(['id' => SORT_DESC]);
+        $query = TransporteAdmin::find()
+        ->orderBy(['id' => SORT_DESC]);
 
         // add conditions that should always apply here
 
@@ -75,7 +76,6 @@ class TransporteAdminAcompanhamentoSearch extends TransporteAdminAcompanhamento
             // $query->where('0=1');
             return $dataProvider;
         }
-
 
         $query->joinWith('tipoCarga');
         $query->joinWith('motorista');

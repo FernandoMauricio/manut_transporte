@@ -17,6 +17,13 @@ use app\models\Situacao;
 
 $this->title = 'Solicitações de Transporte  ';
 $this->params['breadcrumbs'][] = $this->title;
+
+//Pega as mensagens
+foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
+echo '<div class="alert alert-'.$key.'">'.$message.'</div>';
+}
+
+
 ?>
 <div class="transporte-admin-acompanhamento-index">
 
@@ -25,7 +32,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php
 $gridColumns = [
-            ['class' => 'yii\grid\SerialColumn'],
             'id',
             'usuario_solic_nome',
 
@@ -186,8 +192,8 @@ $gridColumns = [
     'beforeHeader'=>[
         [
             'columns'=>[
-                ['content'=>'Detalhes das Solicitações de Transporte', 'options'=>['colspan'=>10, 'class'=>'text-center warning']], 
-                ['content'=>'Ações', 'options'=>['colspan'=>3, 'class'=>'text-center warning']], 
+                ['content'=>'Detalhes das Solicitações de Transporte', 'options'=>['colspan'=>9, 'class'=>'text-center warning']], 
+                ['content'=>'Ações', 'options'=>['colspan'=>2, 'class'=>'text-center warning']], 
             ],
         ]
     ],

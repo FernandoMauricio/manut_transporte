@@ -56,6 +56,7 @@ class ManutencaoAdminAcompanhamentoSearch extends ManutencaoAdminAcompanhamento
         'desc' => ['situacao.nome' => SORT_DESC],
         ];
 
+        $query->joinWith('situacao');
 
         $this->load($params);
 

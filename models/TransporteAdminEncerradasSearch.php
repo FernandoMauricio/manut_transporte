@@ -80,6 +80,7 @@ class TransporteAdminEncerradasSearch extends TransporteAdminEncerradas
         $query->joinWith('tipoCarga');
         $query->joinWith('motorista');
         $query->joinWith('bairro');
+        $query->joinWith('situacao');
 
         // grid filtering conditions
         $query->andFilterWhere([

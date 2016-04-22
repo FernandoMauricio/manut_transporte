@@ -68,15 +68,71 @@ class TransporteAdminAcompanhamentoController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+ public function actionView($id)
     {
+        $session = Yii::$app->session;
+        if (!isset($session['sess_codusuario']) && !isset($session['sess_codcolaborador']) && !isset($session['sess_codunidade']) && !isset($session['sess_nomeusuario']) && !isset($session['sess_coddepartamento']) && !isset($session['sess_codcargo']) && !isset($session['sess_cargo']) && !isset($session['sess_setor']) && !isset($session['sess_unidade']) && !isset($session['sess_responsavelsetor'])) 
+        {
+           return $this->redirect('http://portalsenac.am.senac.br');
+        }
+
+    //VERIFICA SE O COLABORADOR FAZ PARTE DA EQUIPE DO GMT
+    if($session['sess_coddepartamento'] != 16){
+
+        $this->layout = 'main-acesso-negado';
+        return $this->render('/site/acesso_negado');
+
+    }else
+
         $session = Yii::$app->session;
 
          $model = $this->findModel($id);
          $forum = new Forum();
 
+
+         $forum->transporte_id = $model->id;
+         $forum->usuario_id = $session['sess_codusuario'];
+         $forum->data = date('Y-m-d H:i');
+
+
         //CONVERSA ENTRE USUARIO E SUPORTE
         if ($forum->load(Yii::$app->request->post()) && $forum->save()) {
+
+
+ 
+         //ENVIANDO EMAIL PARA O USUÁRIO INFORMANDO SOBRE UMA NOVA MENSAGEM....
+          $sql_email = "SELECT emus_email FROM `db_base`.emailusuario_emus WHERE emus_codusuario = '".$model->idusuario_solic."'";
+      
+      $email_solicitacao = Emailusuario::findBySql($sql_email)->all(); 
+      foreach ($email_solicitacao as $email)
+          {
+            $email_usuario  = $email["emus_email"];
+
+                            Yii::$app->mailer->compose()
+                            ->setFrom(['gmt.suporte@am.senac.br' => 'GMT - INFORMA'])
+                            ->setTo($email_usuario)
+                            ->setSubject('Nova Mensagem! - Solicitação de Transporte '.$model->id.'')
+                            ->setTextBody('Por favor, verique uma nova mensagem na solicitação de transporte de código: '.$model->id.' com status de '.$model->situacao->nome.' ')
+                            ->setHtmlBody('<p>Prezado(a), <span style="color:rgb(247, 148, 29)"><strong>'.$model->usuario_solic_nome.'</strong></span></p>
+
+                            <p>A solicita&ccedil;&atilde;o de transporte de c&oacute;digo <span style="color:rgb(247, 148, 29)"><strong>'.$model->id.'</strong></span> foi atualizada:</p>
+
+                            <p><strong>Mensagem</strong>: '.$forum->mensagem.'</p>
+
+                            <p><strong>Respons&aacute;vel pelo Atendimento</strong>: '.$model->usuario_suport_nome.'</p>
+
+                            <p>Por favor, n&atilde;o responda esse e-mail. Acesse http://portalsenac.am.senac.br</p>
+
+                            <p>Atenciosamente,&nbsp;</p>
+
+                            <p>Ger&ecirc;ncia de Manutenção e Transporte - GMT</p>')
+                            ->send();
+               } 
+
+
+            //MENSAGEM DE CONFIRMAÇÃO
+            Yii::$app->session->setFlash('success', '<strong>SUCESSO! </strong> A solicitação de Transporte de código <strong>' .$model->id. '</strong> foi ATUALIZADA!</strong>');
+
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('view', [
@@ -89,7 +145,6 @@ class TransporteAdminAcompanhamentoController extends Controller
         }
 
     }
-
     /**
      * Creates a new TransporteAdminAcompanhamento model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -269,15 +324,8 @@ class TransporteAdminAcompanhamentoController extends Controller
         }
 
  //MENSAGEM DE CONFIRMAÇÃO DA SOLICITAÇÃO DE CONTRATAÇÃO ENCERRADA  
-                Yii::$app->getSession()->setFlash('success', [
-                         'type' => 'success',
-                         'duration' => 5000,
-                         'icon' => 'glyphicon glyphicon-ok',
-                         'message' => 'A Solicitação de Transporte foi FINALIZADA',
-                         'title' => 'Solicitação de Transporte',
-                         'positonY' => 'top',
-                         'positonX' => 'right'
-                     ]);
+            Yii::$app->session->setFlash('success', '<strong>SUCESSO! </strong> A solicitação de Transporte de código <strong>' .$model->id. '</strong> foi FINALIZADA!</strong>');
+            
      
 return $this->redirect(['index']);
 

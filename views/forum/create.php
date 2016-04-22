@@ -11,7 +11,7 @@ $this->title = 'Atualizar Solicitação de Transporte';
 ?>
 <div class="forum-create">
 
-    <h1><?= Html::encode('Chat Suporte - Atendimetno') ?></h1>
+    <h1><?= Html::encode('Chat Suporte - Atendimento') ?></h1>
 
     <?= $this->render('/forum/_form', [
         'forum' => $forum,

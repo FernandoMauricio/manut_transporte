@@ -79,6 +79,7 @@ class TransporteAdminSearch extends TransporteAdmin
         $query->joinWith('tipoCarga');
         $query->joinWith('motorista');
         $query->joinWith('bairro');
+        $query->joinWith('situacao');
 
         // grid filtering conditions
         $query->andFilterWhere([

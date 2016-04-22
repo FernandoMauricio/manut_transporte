@@ -327,15 +327,7 @@ class TransporteAdminController extends Controller
         }
 
  //MENSAGEM DE CONFIRMAÇÃO DA SOLICITAÇÃO DE CONTRATAÇÃO ENCERRADA  
-                Yii::$app->getSession()->setFlash('success', [
-                         'type' => 'success',
-                         'duration' => 5000,
-                         'icon' => 'glyphicon glyphicon-ok',
-                         'message' => 'A Solicitação de Transporte foi FINALIZADA',
-                         'title' => 'Solicitação de Transporte',
-                         'positonY' => 'top',
-                         'positonX' => 'right'
-                     ]);
+            Yii::$app->session->setFlash('success', '<strong>SUCESSO! </strong> A solicitação de Transporte de código <strong>' .$model->id. '</strong> foi FINALIZADA!</strong>');
      
 return $this->redirect(['index']);
 
