@@ -5,6 +5,7 @@ use kartik\grid\GridView;
 use kartik\export\ExportMenu;
 use app\models\TipoCarga;
 use app\models\Motorista;
+use app\models\Unidades;
 use kartik\widgets\DatePicker;
 use kartik\widgets\Select2;
 use yii\widgets\Pjax;
@@ -31,6 +32,8 @@ echo '<div class="alert alert-'.$key.'">'.$message.'</div>';
 $gridColumns = [
             'id',
             'usuario_solic_nome',
+            
+            'unidade_solic',
 
             [
                 'attribute' => 'data_solicitacao',

@@ -19,7 +19,7 @@ class TransporteAdminAcompanhamentoSearch extends TransporteAdminAcompanhamento
     {
         return [
             [['id', 'tipo_solic_id', 'tipocarga_id', 'situacao_id', 'motorista_id', 'idusuario_solic', 'idusuario_suport'], 'integer'],
-            [['data_solicitacao', 'bairro_id','descricao_transporte', 'local', 'data_prevista', 'hora_prevista', 'data_confirmacao', 'hora_confirmacao', 'usuario_solic_nome', 'usuario_suport_nome', 'tipo_carga_label', 'motorista_label','situacao_label'], 'safe'],
+            [['data_solicitacao', 'bairro_id','descricao_transporte', 'local', 'data_prevista', 'hora_prevista', 'data_confirmacao', 'unidade_solic', 'hora_confirmacao', 'usuario_solic_nome', 'usuario_suport_nome', 'tipo_carga_label', 'motorista_label','situacao_label'], 'safe'],
         ];
     }
 
@@ -100,6 +100,7 @@ class TransporteAdminAcompanhamentoSearch extends TransporteAdminAcompanhamento
 
         $query->andFilterWhere(['like', 'descricao_transporte', $this->descricao_transporte])
             ->andFilterWhere(['like', 'local', $this->local])
+            ->andFilterWhere(['like', 'unidade_solic', $this->unidade_solic])
             ->andFilterWhere(['=', 'tipo_carga.descricao', $this->tipo_carga_label])
             ->andFilterWhere(['=', 'motorista.descricao', $this->motorista_label])
             ->andFilterWhere(['like', 'bairro.descricao', $this->bairro_id])

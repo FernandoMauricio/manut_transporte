@@ -60,6 +60,7 @@ echo '<div class="alert alert-'.$key.'">'.$message.'</div>';
               'value' => '<span class="label label-info">' .$model->situacao->nome .'</span>' 
             ],
             'motorista.descricao', //motorista_id
+            'unidade_solic',
             //'idusuario_solic',
             'usuario_solic_nome',
             //'idusuario_suport',

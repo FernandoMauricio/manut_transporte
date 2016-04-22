@@ -134,6 +134,7 @@ class TransporteController extends Controller
         $model->idusuario_solic = $session['sess_codusuario'];
         $model->usuario_solic_nome = $session['sess_nomeusuario'];
         $model->cod_unidade_solic = $session['sess_codunidade'];
+        $model->unidade_solic = $session['sess_unidade'];
         $model->data_solicitacao = date('Y-m-d');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {

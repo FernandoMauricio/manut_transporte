@@ -35,6 +35,8 @@ $gridColumns = [
             'id',
             'usuario_solic_nome',
 
+            'unidade_solic',
+
             [
                 'attribute' => 'data_solicitacao',
                 'format' => ['date', 'php:d/m/Y'],
@@ -180,7 +182,6 @@ $gridColumns = [
         ],
 
  'exportConfig' => [
-        kartik\export\ExportMenu::EXCEL => true,
         kartik\export\ExportMenu::PDF => true,
     ],  
 
