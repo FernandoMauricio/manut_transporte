@@ -21,6 +21,18 @@ echo '<div class="alert alert-'.$key.'">'.$message.'</div>';
 
     <h1><?= Html::encode($this->title) ?></h1>
 
+ <?php
+
+ //MENSAGEM INFORMANDO O USUÁRIO E A DATA QUE FINALIZOU A CI
+  if($model->situacao_id == 3 AND $model->usuario_encerramento != NULL ){
+
+    echo "<div class='alert alert-danger' align='center' role='alert'><span class='glyphicon glyphicon-alert' aria-hidden='true'></span> Solicitação de  ". $model->tipoSolic->descricao ." <strong>Encerrada</strong> por: <strong> ". $model->usuario_encerramento ."</strong> na data ". date('d/m/Y à\s H:i', strtotime($model->data_encerramento)) ."</div>";
+
+  }
+
+    ?>
+
+    
     <p>
         <?= Html::a('Atualizar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
     </p>

@@ -78,11 +78,11 @@ class ManutencaoController extends Controller
                             Yii::$app->mailer->compose()
                             ->setFrom(['gmt.suporte@am.senac.br' => 'GMT - INFORMA'])
                             ->setTo($email_usuario)
-                            ->setSubject('Nova Mensagem! - Solicitação de Transporte '.$model->id.'')
-                            ->setTextBody('Por favor, verique uma nova mensagem na solicitação de transporte de código: '.$model->id.' com status de '.$model->situacao->nome.' ')
+                            ->setSubject('Nova Mensagem! - Solicitação de Manutenção '.$model->id.'')
+                            ->setTextBody('Por favor, verique uma nova mensagem na solicitação de manutenção de código: '.$model->id.' com status de '.$model->situacao->nome.' ')
                             ->setHtmlBody('<p>Prezado(a), <span style="color:rgb(247, 148, 29)"><strong>'.$model->usuario_suport_nome.'</strong></span></p>
 
-                            <p>A solicita&ccedil;&atilde;o de transporte de c&oacute;digo <span style="color:rgb(247, 148, 29)"><strong>'.$model->id.'</strong></span> foi atualizada:</p>
+                            <p>A solicita&ccedil;&atilde;o de manutenção de c&oacute;digo <span style="color:rgb(247, 148, 29)"><strong>'.$model->id.'</strong></span> foi atualizada:</p>
 
                             <p><strong>Mensagem</strong>: '.$forum->mensagem.'</p>
 
@@ -96,7 +96,7 @@ class ManutencaoController extends Controller
 
 
             //MENSAGEM DE CONFIRMAÇÃO
-            Yii::$app->session->setFlash('success', '<strong>SUCESSO! </strong> A solicitação de Transporte de código <strong>' .$model->id. '</strong> foi ATUALIZADA!</strong>');
+            Yii::$app->session->setFlash('success', '<strong>SUCESSO! </strong> A solicitação de Manutenção de código <strong>' .$model->id. '</strong> foi ATUALIZADA!</strong>');
 
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -144,7 +144,7 @@ class ManutencaoController extends Controller
                                     Yii::$app->mailer->compose()
                                     ->setFrom(['gmt.suporte@am.senac.br' => 'GMT - INFORMA'])
                                     ->setTo($email_usuario)
-                                    ->setSubject('Solicitação de Transporte - ' . $model->id)
+                                    ->setSubject('Solicitação de Manutenção - ' . $model->id)
                                     ->setTextBody('Existe uma solicitação de '.$model->tipoSolic->descricao.' de código: '.$model->id.' - PENDENTE')
                                     ->setHtmlBody('<p>Prezado(a) Senhor(a),</p>
 
