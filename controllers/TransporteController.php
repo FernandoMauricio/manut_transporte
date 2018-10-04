@@ -89,7 +89,7 @@ class TransporteController extends Controller
 
                             <p><strong>Mensagem</strong>: '.$forum->mensagem.'</p>
 
-                            <p>Por favor, n&atilde;o responda esse e-mail. Acesse http://portalsenac.am.senac.br</p>
+                            <p>Por favor, n&atilde;o responda esse e-mail. Acesse https://portalsenac.am.senac.br</p>
 
                             <p>Atenciosamente,&nbsp;</p>
 
@@ -157,7 +157,7 @@ class TransporteController extends Controller
 
                                     <p>Existe uma solicita&ccedil;&atilde;o de transporte de c&oacute;digo: <strong><span style="color:#F7941D">'.$model->id.' </span></strong>- <strong><span style="color:#F7941D">PENDENTE</span></strong></p>
 
-                                    <p>Por favor, n&atilde;o responda esse e-mail. Acesse http://portalsenac.am.senac.br para ANALISAR a solicita&ccedil;&atilde;o de transporte.</p>
+                                    <p>Por favor, n&atilde;o responda esse e-mail. Acesse https://portalsenac.am.senac.br para ANALISAR a solicita&ccedil;&atilde;o de transporte.</p>
 
                                     <p>Atenciosamente,</p>
 
@@ -240,7 +240,7 @@ class TransporteController extends Controller
 
                             <p><strong>Data do Encerramento</strong>: '.date('d/m/Y H:i', strtotime($model->data_encerramento)).'</p>
 
-                            <p>Por favor, n&atilde;o responda esse e-mail. Acesse http://portalsenac.am.senac.br</p>
+                            <p>Por favor, n&atilde;o responda esse e-mail. Acesse https://portalsenac.am.senac.br</p>
 
                             <p>Atenciosamente,&nbsp;</p>
 

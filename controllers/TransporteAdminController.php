@@ -45,7 +45,7 @@ class TransporteAdminController extends Controller
         $session = Yii::$app->session;
         if (!isset($session['sess_codusuario']) && !isset($session['sess_codcolaborador']) && !isset($session['sess_codunidade']) && !isset($session['sess_nomeusuario']) && !isset($session['sess_coddepartamento']) && !isset($session['sess_codcargo']) && !isset($session['sess_cargo']) && !isset($session['sess_setor']) && !isset($session['sess_unidade']) && !isset($session['sess_responsavelsetor'])) 
         {
-           return $this->redirect('http://portalsenac.am.senac.br');
+           return $this->redirect('https://portalsenac.am.senac.br');
         }
 
     //VERIFICA SE O COLABORADOR FAZ PARTE DA EQUIPE DO GMT
@@ -75,7 +75,7 @@ class TransporteAdminController extends Controller
         $session = Yii::$app->session;
         if (!isset($session['sess_codusuario']) && !isset($session['sess_codcolaborador']) && !isset($session['sess_codunidade']) && !isset($session['sess_nomeusuario']) && !isset($session['sess_coddepartamento']) && !isset($session['sess_codcargo']) && !isset($session['sess_cargo']) && !isset($session['sess_setor']) && !isset($session['sess_unidade']) && !isset($session['sess_responsavelsetor'])) 
         {
-           return $this->redirect('http://portalsenac.am.senac.br');
+           return $this->redirect('https://portalsenac.am.senac.br');
         }
 
     //VERIFICA SE O COLABORADOR FAZ PARTE DA EQUIPE DO GMT
@@ -91,7 +91,6 @@ class TransporteAdminController extends Controller
          $model = $this->findModel($id);
          $forum = new Forum();
 
-
          $forum->transporte_id = $model->id;
          $forum->usuario_id = $session['sess_codusuario'];
          $forum->data = date('Y-m-d H:i');
@@ -99,8 +98,6 @@ class TransporteAdminController extends Controller
 
         //CONVERSA ENTRE USUARIO E SUPORTE
         if ($forum->load(Yii::$app->request->post()) && $forum->save()) {
-
-
  
          //ENVIANDO EMAIL PARA O USUÁRIO INFORMANDO SOBRE UMA NOVA MENSAGEM....
           $sql_email = "SELECT emus_email FROM `db_base`.emailusuario_emus WHERE emus_codusuario = '".$model->idusuario_solic."'";
@@ -123,7 +120,7 @@ class TransporteAdminController extends Controller
 
                             <p><strong>Respons&aacute;vel pelo Atendimento</strong>: '.$model->usuario_suport_nome.'</p>
 
-                            <p>Por favor, n&atilde;o responda esse e-mail. Acesse http://portalsenac.am.senac.br</p>
+                            <p>Por favor, n&atilde;o responda esse e-mail. Acesse https://portalsenac.am.senac.br</p>
 
                             <p>Atenciosamente,&nbsp;</p>
 
@@ -158,7 +155,7 @@ class TransporteAdminController extends Controller
         $session = Yii::$app->session;
         if (!isset($session['sess_codusuario']) && !isset($session['sess_codcolaborador']) && !isset($session['sess_codunidade']) && !isset($session['sess_nomeusuario']) && !isset($session['sess_coddepartamento']) && !isset($session['sess_codcargo']) && !isset($session['sess_cargo']) && !isset($session['sess_setor']) && !isset($session['sess_unidade']) && !isset($session['sess_responsavelsetor'])) 
         {
-           return $this->redirect('http://portalsenac.am.senac.br');
+           return $this->redirect('https://portalsenac.am.senac.br');
         }
 
     //VERIFICA SE O COLABORADOR FAZ PARTE DA EQUIPE DO GMT
@@ -191,7 +188,7 @@ class TransporteAdminController extends Controller
         $session = Yii::$app->session;
         if (!isset($session['sess_codusuario']) && !isset($session['sess_codcolaborador']) && !isset($session['sess_codunidade']) && !isset($session['sess_nomeusuario']) && !isset($session['sess_coddepartamento']) && !isset($session['sess_codcargo']) && !isset($session['sess_cargo']) && !isset($session['sess_setor']) && !isset($session['sess_unidade']) && !isset($session['sess_responsavelsetor'])) 
         {
-           return $this->redirect('http://portalsenac.am.senac.br');
+           return $this->redirect('https://portalsenac.am.senac.br');
         }
 
     //VERIFICA SE O COLABORADOR FAZ PARTE DA EQUIPE DO GMT
@@ -251,7 +248,7 @@ class TransporteAdminController extends Controller
 
                             <p><strong>Respons&aacute;vel pelo Atendimento</strong>: '.$model->usuario_suport_nome.'</p>
 
-                            <p>Por favor, n&atilde;o responda esse e-mail. Acesse http://portalsenac.am.senac.br</p>
+                            <p>Por favor, n&atilde;o responda esse e-mail. Acesse https://portalsenac.am.senac.br</p>
 
                             <p>Atenciosamente,&nbsp;</p>
 
@@ -316,7 +313,7 @@ class TransporteAdminController extends Controller
 
                             <p><strong>Data do Encerramento</strong>: '.date('d/m/Y H:i', strtotime($model->data_encerramento)).'</p>
 
-                            <p>Por favor, n&atilde;o responda esse e-mail. Acesse http://portalsenac.am.senac.br</p>
+                            <p>Por favor, n&atilde;o responda esse e-mail. Acesse https://portalsenac.am.senac.br</p>
 
                             <p>Atenciosamente,&nbsp;</p>
 

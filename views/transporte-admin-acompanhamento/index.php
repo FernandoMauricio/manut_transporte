@@ -10,6 +10,8 @@ use kartik\widgets\DatePicker;
 use kartik\widgets\Select2;
 use yii\widgets\Pjax;
 use app\models\Situacao;
+use yii\bootstrap\Modal;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\TransporteAdminAcompanhamentoSearch */
@@ -30,17 +32,41 @@ echo '<div class="alert alert-'.$key.'">'.$message.'</div>';
    <h1><?= Html::encode($this->title) . '<small>Acompanhamento</small>'  ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
+    <p>
+        <?= Html::button('<span class="glyphicon glyphicon-print" aria-hidden="true"></span> Imprimir dia', ['value'=> Url::to('index.php?r=transporte-admin-acompanhamento/imprimir-dia'), 'class' => 'btn btn-warning', 'id'=>'modalButton']) ?>
+    </p>
+
+    <?php
+        Modal::begin([
+            'options' => ['tabindex' => false ], // important for Select2 to work properly
+            'clientOptions' => ['backdrop' => 'static', 'keyboard' => true],
+            'header' => '<h4>Imprimir dia do Motorista</h4>',
+            'id' => 'modal',
+            'size' => 'modal-lg',
+            ]);
+
+        echo "<div id='modalContent'></div>";
+
+        Modal::end();
+    ?>
+
 <?php
 $gridColumns = [
             'id',
-            'usuario_solic_nome',
+            [
+                'attribute' => 'usuario_solic_nome',
+                 'width' => '10%',
+            ],
 
-            'unidade_solic',
+            [
+                'attribute' => 'unidade_solic',
+                 'width' => '15%',
+            ],
 
             [
                 'attribute' => 'data_solicitacao',
                 'format' => ['date', 'php:d/m/Y'],
-                'width' => '190px',
+                'width' => '5%',
                 'hAlign' => 'center',
                 'filter'=> DatePicker::widget([
                 'model' => $searchModel, 
@@ -55,7 +81,7 @@ $gridColumns = [
             [
                 'attribute'=>'tipo_carga_label', 
                 'vAlign'=>'middle',
-                'width'=>'160px',
+                'width'=>'7%',
                 'value'=>function ($model, $key, $index, $widget) { 
                     return Html::a($model->tipoCarga->descricao);
                 },
@@ -71,9 +97,16 @@ $gridColumns = [
             [
                 'attribute' => 'bairro_id',
                 'value' => 'bairro.descricao',
-                 'contentOptions' =>['style' => 'width:30px'],
+                'width'=>'7%',
             ],
 
+
+            [
+                'attribute' => 'descricao_transporte',
+                 'width' => '25%',
+            ],
+
+                
             [
                 'attribute'=>'motorista_label', 
                 'width'=>'460px',
@@ -193,8 +226,8 @@ $gridColumns = [
     'beforeHeader'=>[
         [
             'columns'=>[
-                ['content'=>'Detalhes das Solicitações de Transporte', 'options'=>['colspan'=>9, 'class'=>'text-center warning']], 
-                ['content'=>'Ações', 'options'=>['colspan'=>2, 'class'=>'text-center warning']], 
+                ['content'=>'Detalhes das Solicitações de Transporte', 'options'=>['colspan'=>11, 'class'=>'text-center warning']], 
+                ['content'=>'Ações', 'options'=>['colspan'=>1, 'class'=>'text-center warning']], 
             ],
         ]
     ],

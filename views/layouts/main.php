@@ -75,7 +75,7 @@ if($session['sess_codunidade'] == 12 && $session['sess_coddepartamento'] == 16 )
                     ],
 
 
-            ['label' => 'Sair', 'url' => 'http://portalsenac.am.senac.br/portal_senac/control_base_vermodulos/control_base_vermodulos.php'],
+            ['label' => 'Sair', 'url' => 'https://portalsenac.am.senac.br/portal_senac/control_base_vermodulos/control_base_vermodulos.php'],
 
                 ],
             ]);
@@ -96,7 +96,7 @@ if($session['sess_codunidade'] == 12 && $session['sess_coddepartamento'] == 16 )
                     ],
 
 
-            ['label' => 'Sair', 'url' => 'http://portalsenac.am.senac.br/portal_senac/control_base_vermodulos/control_base_vermodulos.php'],
+            ['label' => 'Sair', 'url' => 'https://portalsenac.am.senac.br/portal_senac/control_base_vermodulos/control_base_vermodulos.php'],
 
                 ],
             ]);
