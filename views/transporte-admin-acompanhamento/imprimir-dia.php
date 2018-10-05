@@ -14,7 +14,7 @@ use yii\helpers\Url;
 
 <div class="transporte-imprimir-dia-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['options'=>['target'=>'_blank']]); ?>
 
 <div class="panel-body">
 	<div class="row">
@@ -32,7 +32,7 @@ use yii\helpers\Url;
 		</div>
 		<div class="col-md-6">
 		    <?php
-		        echo $form->field($model, 'data_prevista')->widget(DateControl::classname(), [
+		        echo $form->field($model, 'data_confirmacao')->widget(DateControl::classname(), [
 		        'type'=>DateControl::FORMAT_DATE,
 		        'ajaxConversion'=>true,
 		        'options' => [
