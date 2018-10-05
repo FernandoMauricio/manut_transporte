@@ -25,8 +25,17 @@ use yii\helpers\Html;
 <body>
 	<table class="table table-condensed table-hover">
 		<tr> 
-			<td style="border-top: 0px solid" width="50%"><h3>Histórico do Percurso da Solicitação de Transporte</h3></td>
-			<td style="border-top: 0px solid" width="40%"><img width="20%" src="css/img/logo.png"></td>
+			<td style="border-top: 0px solid;width: 10%;"><img width="60%" src="css/img/logo.png"></td>
+			<td style="border-top: 0px solid;width: 50%;"><h3>Histórico do Percurso da Solicitação de Transporte</h3></td>
+		</tr>
+	</table>
+
+	<table class="table table-condensed table-hover">
+		<tr>
+			<td style="border-top: 0px solid; font-size: 12px"><b>Nome do Motorista:</b> <?= $motorista['descricao'] ?></td>
+		</tr>
+		<tr>
+			<td style="border-top: 0px solid; font-size: 12px"><b>Modelo do Veículo/Placa:</b> ____________________________</td>
 		</tr>
 	</table>
 
@@ -70,7 +79,7 @@ use yii\helpers\Html;
 	      		<td>Saída</td>
 	      		<td>Regresso</td>
 	    	</tr>
-	    <?php for ($row = 0; $row < 7; $row ++): ?>
+	    <?php for ($row = 0; $row < 5; $row ++): ?>
 	      	<tr style="height: 30px;">
 	      		<td></td>
 	      		<td></td>

@@ -93,9 +93,11 @@ class TransporteAdminAcompanhamentoController extends Controller
 
       }else
          $models = $this->findModelImprimirDia($motorista_id, $data_confirmacao);
+         $motorista = $this->findModelMotoristaDia($motorista_id);
 
          return $this->renderAjax('imprimir', [
             'models' => $models,
+            'motorista' => $motorista,
          ]);
    }
 
@@ -396,6 +398,17 @@ class TransporteAdminAcompanhamentoController extends Controller
 
        if (($imprimir_dia = Transporte::findBySql($queryImprimirDia)->all()) !== null ) {
            return $imprimir_dia;
+       } else {
+           throw new NotFoundHttpException('Não existem dados a serem exibidos!');
+       }
+   }
+
+   protected function findModelMotoristaDia($motorista_id)
+   {
+       $queryMotoristaDia = "SELECT * FROM motorista WHERE id = '".$motorista_id."'";
+
+       if (($motorista_dia = Motorista::findBySql($queryMotoristaDia)->one()) !== null ) {
+           return $motorista_dia;
        } else {
            throw new NotFoundHttpException('Não existem dados a serem exibidos!');
        }
